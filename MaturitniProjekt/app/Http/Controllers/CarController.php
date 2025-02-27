@@ -23,37 +23,35 @@ class CarController extends Controller
 
     // Uložení nového auta do databáze
     public function store(Request $request)
-{
+    {
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'model' => 'required|string|max:255',
-        'price_per_day' => 'required|numeric|min:0',
-        'available' => 'required|in:1,0',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'price_per_day' => 'required|numeric|min:0',
+            'available' => 'required|in:1,0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Pouze relevantní pole
-    $data = $request->only(['name', 'model', 'price_per_day', 'available']);
-    
+        $data = $request->only([
+            'name',
+            'description',
+            'price_per_day',
+            'available'
+        ]);
 
-    // Uložení obrázku do public/images/
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('images'), $filename);
-        $data['image_url'] = 'images/' . $filename;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $data['image_url'] = 'images/' . $filename;
+        }
+
+        $car = Car::create($data);
+
+        return redirect()->route('admin.cars')
+            ->with('success', 'Auto bylo úspěšně přidáno!');
     }
-
-    // Vytvoření auta v databázi
-    $car = Car::create($data);
-
-    if ($car) {
-        return redirect()->route('admin.cars')->with('success', 'Auto bylo přidáno!');
-    } else {
-        return back()->with('error', 'Chyba při přidávání auta.');
-    }
-}
 
 
     // Zobrazení formuláře pro editaci auta
