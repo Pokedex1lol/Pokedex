@@ -23,26 +23,40 @@ class CarController extends Controller
 
     // Uložení nového auta do databáze
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'price_per_day' => 'required|numeric|min:0',
-            'available' => 'required|in:1,0', // Opravená validace dostupnosti
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
 
-        $data = $request->all();
+    dd($request->all()); // Debugovací výpis - zobrazí všechna odeslaná data
 
-        // Uložení obrázku
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public'); // Uloží do public/images/
-            $data['image_url'] = 'images/' . basename($imagePath); // Uloží jen relativní cestu
-        }
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+        'price_per_day' => 'required|numeric|min:0',
+        'available' => 'required|in:1,0',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        Car::create($data);
-        return redirect()->route('admin.cars')->with('success', 'Auto bylo přidáno!');
+    // Pouze relevantní pole
+    $data = $request->only(['name', 'model', 'price_per_day', 'available']);
+    
+
+    // Uložení obrázku do public/images/
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('images'), $filename);
+        $data['image_url'] = 'images/' . $filename;
     }
+
+    // Vytvoření auta v databázi
+    $car = Car::create($data);
+
+    if ($car) {
+        return redirect()->route('admin.cars')->with('success', 'Auto bylo přidáno!');
+    } else {
+        return back()->with('error', 'Chyba při přidávání auta.');
+    }
+}
+
 
     // Zobrazení formuláře pro editaci auta
     public function edit(Car $car)
@@ -57,7 +71,7 @@ class CarController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price_per_day' => 'required|numeric|min:0',
-            'available' => 'required|in:1,0', // Opravená validace dostupnosti
+            'available' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -66,16 +80,15 @@ class CarController extends Controller
         // Pokud je nahrán nový obrázek
         if ($request->hasFile('image')) {
             // Smazání starého obrázku, pokud existuje
-            if ($car->image_url && Storage::disk('public')->exists($car->image_url)) {
-                Storage::disk('public')->delete($car->image_url);
+            if ($car->image_url && file_exists(public_path($car->image_url))) {
+                unlink(public_path($car->image_url));
             }
 
-            // Uložení nového obrázku
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image_url'] = $imagePath;
-        } else {
-            // Pokud není nový obrázek, zachovej starý
-            $data['image_url'] = $car->image_url;
+            // Uložení nového obrázku do public/images/
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $data['image_url'] = 'images/' . $filename;
         }
 
         // Aktualizace dat v DB
@@ -88,8 +101,8 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         // Smazání obrázku, pokud existuje
-        if ($car->image_url && Storage::disk('public')->exists($car->image_url)) {
-            Storage::disk('public')->delete($car->image_url);
+        if ($car->image_url && file_exists(public_path($car->image_url))) {
+            unlink(public_path($car->image_url));
         }
 
         $car->delete();
