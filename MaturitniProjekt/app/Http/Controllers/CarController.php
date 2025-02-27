@@ -25,8 +25,6 @@ class CarController extends Controller
     public function store(Request $request)
 {
 
-    dd($request->all()); // Debugovací výpis - zobrazí všechna odeslaná data
-
     $request->validate([
         'name' => 'required|string|max:255',
         'model' => 'required|string|max:255',
