@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +21,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -140,6 +142,7 @@
                 opacity: 0;
                 transform: translateX(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -163,6 +166,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -187,19 +191,19 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container">
         <h1 class="text-center">Správa Aut</h1>
-        
+
         <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('landing') }}" class="btn">Zpět na web</a>
             <a href="{{ route('admin.cars.create') }}" class="btn">Přidat Auto</a>
         </div>
-        
+
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-        
+
         <table class="table table-striped table-dark">
             <thead class="thead-light">
                 <tr>
@@ -216,7 +220,7 @@
                     <td>{{ $car->id }}</td>
                     <td>{{ $car->name }}</td>
                     <td>{{ $car->model }}</td>
-                    <td>{{ $car->available ? 'Ano' : 'Ne' }}</td>
+                    <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
                     <td>
                         <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn">Upravit</a>
                         <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" style="display:inline;">
@@ -231,4 +235,5 @@
         </table>
     </div>
 </body>
+
 </html>
