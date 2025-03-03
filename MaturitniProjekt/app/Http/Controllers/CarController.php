@@ -29,7 +29,7 @@ class CarController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'price_per_day' => 'required|numeric|min:0',
-            'available' => 'required|in:1,0',
+            'availability' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -37,7 +37,7 @@ class CarController extends Controller
             'name',
             'description',
             'price_per_day',
-            'available'
+            'availability'
         ]);
 
         if ($request->hasFile('image')) {
@@ -67,11 +67,11 @@ class CarController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price_per_day' => 'required|numeric|min:0',
-            'available' => 'required|in:1,0',
+            'availability' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->only(['name', 'description', 'price_per_day', 'available']);
+        $data = $request->only(['name', 'description', 'price_per_day', 'availability']);
 
         // Pokud je nahrán nový obrázek
         if ($request->hasFile('image')) {

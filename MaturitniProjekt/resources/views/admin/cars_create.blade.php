@@ -90,7 +90,7 @@
 
             <div class="form-group">
                 <label for="available">Dostupné:</label>
-                <select id="available" name="available" class="form-control">
+                <select id="available" name="availability" class="form-control">
                     <option value="1" {{ old('available') == '1' ? 'selected' : '' }}>Ano</option>
                     <option value="0" {{ old('available') == '0' ? 'selected' : '' }}>Ne</option>
                 </select>

@@ -35,7 +35,7 @@
 
             <div class="form-group">
                 <label for="available">Dostupné:</label>
-                <select id="available" name="available" class="form-control">
+                <select id="available" name="availability" class="form-control">
                     <option value="1" {{ $car->available ? 'selected' : '' }}>Ano</option>
                     <option value="0" {{ !$car->available ? 'selected' : '' }}>Ne</option>
                 </select>
@@ -45,8 +45,8 @@
                 <label for="image">Obrázek:</label>
                 <input type="file" id="image" name="image" class="form-control">
                 @if ($car->image_url)
-                    <p>Aktuální obrázek:</p>
-                    <img src="{{ asset($car->image_url) }}" alt="Aktuální obrázek" style="max-width: 200px;">
+                <p>Aktuální obrázek:</p>
+                <img src="{{ asset($car->image_url) }}" alt="Aktuální obrázek" style="max-width: 200px;">
                 @endif
             </div>
 
