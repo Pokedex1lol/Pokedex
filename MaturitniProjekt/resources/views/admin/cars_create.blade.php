@@ -56,9 +56,9 @@
         <h1>Přidat Auto</h1>
 
         @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
         @endif
 
         <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data">
@@ -68,7 +68,7 @@
                 <label for="name">Název:</label>
                 <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
                 @error('name')
-                <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -76,15 +76,16 @@
                 <label for="description">Popis:</label>
                 <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
                 @error('description')
-                <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="price_per_day">Cena za den:</label>
-                <input type="number" id="price_per_day" name="price_per_day" class="form-control" value="{{ old('price_per_day') }}" required>
+                <input type="number" id="price_per_day" name="price_per_day" class="form-control"
+                    value="{{ old('price_per_day') }}" required>
                 @error('price_per_day')
-                <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -95,15 +96,54 @@
                     <option value="0" {{ old('available') == '0' ? 'selected' : '' }}>Ne</option>
                 </select>
                 @error('available')
-                <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+
+
+            <!-- Nové -->
+
+            <div>
+                <label for="power">Výkon (kW)</label>
+                <input type="number" name="power" id="power" class="form-control">
+            </div>
+
+            <div>
+                <label for="engine">Typ motoru</label>
+                <input type="text" name="engine" id="engine" class="form-control">
+            </div>
+
+            <div>
+                <label for="year">Rok výroby</label>
+                <input type="number" name="year" id="year" class="form-control">
+            </div>
+
+            <div>
+                <label for="transmission">Převodovka</label>
+                <select name="transmission" id="transmission" class="form-control">
+                    <option value="manuální">Manuální</option>
+                    <option value="automatická">Automatická</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="fuel_consumption">Spotřeba (l/100 km)</label>
+                <input type="number" step="0.1" name="fuel_consumption" id="fuel_consumption" class="form-control">
+            </div>
+
+            <div>
+                <label for="seats">Počet míst</label>
+                <input type="number" name="seats" id="seats" class="form-control">
+            </div>
+
+
+            <!-- Nové -->
 
             <div class="form-group">
                 <label for="image">Obrázek:</label>
                 <input type="file" id="image" name="image" class="form-control">
                 @error('image')
-                <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 

@@ -9,7 +9,8 @@ class Car extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price_per_day', 'availability', 'image_url'];
+    protected $fillable = ['name', 'description', 'price_per_day', 'availability', 'image_url',
+    'power', 'engine', 'year', 'transmission', 'fuel_consumption', 'seats'];
 
     // Vztah s rezervacemi
     public function reservations()

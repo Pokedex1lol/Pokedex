@@ -19,6 +19,14 @@ return new class extends Migration
         $table->boolean('availability')->default(true);
         $table->string('image_url'); // Přidá URL na obrázky
         $table->timestamps();
+
+        // Nové 
+        $table->integer('power')->nullable(); // Výkon v kW
+        $table->string('engine')->nullable(); // Typ motoru (benzín, diesel, hybrid, elektro)
+        $table->integer('year')->nullable(); // Rok výroby
+        $table->string('transmission')->nullable(); // Převodovka (manuální/automatická)
+        $table->decimal('fuel_consumption', 4, 1)->nullable(); // Spotřeba (litry na 100 km)
+        $table->integer('seats')->nullable(); // Počet míst
     });
 }
 

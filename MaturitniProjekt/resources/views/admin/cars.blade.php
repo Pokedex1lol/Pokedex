@@ -201,7 +201,7 @@
         </div>
 
         @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         <table class="table table-striped table-dark">
@@ -211,25 +211,40 @@
                     <th>Název</th>
                     <th>Model</th>
                     <th>Dostupnost</th>
+                    <th>Výkon (kW)</th>
+                    <th>Motor</th>
+                    <th>Rok</th>
+                    <th>Převodovka</th>
+                    <th>Spotřeba</th>
+                    <th>Sedadla</th>
                     <th>Akce</th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach($cars as $car)
-                <tr>
-                    <td>{{ $car->id }}</td>
-                    <td>{{ $car->name }}</td>
-                    <td>{{ $car->model }}</td>
-                    <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
-                    <td>
-                        <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn">Upravit</a>
-                        <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn">Smazat</button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{ $car->id }}</td>
+                        <td>{{ $car->name }}</td>
+                        <td>{{ $car->model }}</td>
+                        <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
+                        <td>{{ $car->power }}</td>
+                        <td>{{ $car->engine }}</td>
+                        <td>{{ $car->year }}</td>
+                        <td>{{ $car->transmission }}</td>
+                        <td>{{ $car->fuel_consumption }} l/100 km</td>
+                        <td>{{ $car->seats }}</td>
+
+                        <td>
+                            <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn">Upravit</a>
+                            <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn">Smazat</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
