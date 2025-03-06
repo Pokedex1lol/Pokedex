@@ -128,7 +128,6 @@
         }
 
         .container {
-            max-width: 900px;
             margin: 6rem auto 3rem;
             background-color: #2C2C2C;
             padding: 2rem;

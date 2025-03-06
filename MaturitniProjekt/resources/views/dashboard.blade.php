@@ -6,19 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Půjčovna JDM - Dashboard</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script>
         // Toggle visibility of the dropdown menu
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const accountButton = document.querySelector('.account-button');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            accountButton.addEventListener('click', function (event) {
+            accountButton.addEventListener('click', function(event) {
                 event.preventDefault();
                 dropdownMenu.classList.toggle('hidden');
             });
 
             // Close the dropdown if clicking outside of it
-            document.addEventListener('click', function (event) {
+            document.addEventListener('click', function(event) {
                 if (!accountButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.add('hidden');
                 }
@@ -106,8 +107,8 @@
             margin-bottom: 2rem;
         }
 
-         /* Navbar */
-         .navbar {
+        /* Navbar */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -238,13 +239,26 @@
         <h1>Vítejte, vyberte si auto k rezervaci!</h1>
         <div class="car-grid">
             @foreach ($cars as $car)
-                <div class="car-card">
-                    <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}">
-                    <h2>{{ $car->name }}</h2>
-                    <p>{{ $car->description }}</p>
-                    <p>Cena: {{ $car->price_per_day }} Kč / den</p>
-                    <a href="{{ route('reservations.show', ['id' => $car->id]) }}" class="reserve-button">Rezervovat</a>
-                </div>
+            <div class="car-card">
+                <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}">
+                <h2>{{ $car->name }}</h2>
+                <p>
+                    <i class="fas fa-tachometer-alt"></i> Výkon kW: {{ $car->power }}
+                </p>
+                <p>
+                    <i class="fas fa-car"></i> Dostupnost nyní: {{ $car->availability ? 'Ano' : 'Ne' }}
+                </p>
+                <p>
+                    <i class="fas fa-calendar-alt"></i> Rok výroby: {{ $car->year }}
+                </p>
+                <p>
+                    <i class="fas fa-info-circle"></i> {{ \Illuminate\Support\Str::limit($car->description, 80) }}
+                </p>
+                <p>
+                    <i class="fas fa-tag"></i> Cena: {{ $car->price_per_day }} Kč / den
+                </p>
+                <a href="{{ route('reservations.show', ['id' => $car->id]) }}" class="reserve-button">Rezervovat</a>
+            </div>
             @endforeach
         </div>
     </div>

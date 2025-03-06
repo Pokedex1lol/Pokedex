@@ -8,6 +8,10 @@
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+    <!-- Ikony -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cs.js"></script>
@@ -130,7 +134,7 @@
 
         .car-image {
             width: 100%;
-            max-height: 300px;
+            max-height: 500px;
             object-fit: cover;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
@@ -252,8 +256,15 @@
     <div class="container">
         <h2>{{ $car->name }}</h2>
         <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}" class="car-image">
+        <p> <i class="fas fa-tachometer-alt"></i> Výkon kW: {{ $car->power }} </p>
+        <p> <i class="fas fa-car"></i> Dostupnost nyní: {{ $car->availability ? 'Ano' : 'Ne' }} </p>
+        <p> <i class="fas fa-calendar-alt"></i> Rok výroby: {{ $car->year }} </p>
+        <p> <i class="fas fa-cogs"></i> Motor: {{ $car->engine }} </p>
+        <p> <i class="fas fa-gears"></i> Převodovka: {{ $car->transmission }} </p>
+        <p> <i class="fas fa-gas-pump"></i> Spotřeba: {{ $car->fuel_consumption }} </p>
+        <p> <i class="fas fa-users"></i> Počet sedadel: {{ $car->seats }} </p>
+        <p> <strong><i class="fas fa-tag"></i> Cena: {{ $car->price_per_day }} Kč / den </strong></p>
         <p><strong>{{ $car->description }}</strong></p>
-        <p>Cena za den: <strong>{{ $car->price_per_day }} Kč</strong></p>
 
         <!-- Kalendář -->
         <h3>Kalendář dostupnosti</h3>
