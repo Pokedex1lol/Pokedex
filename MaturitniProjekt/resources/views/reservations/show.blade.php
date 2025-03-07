@@ -132,12 +132,84 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
         }
 
+        /* Auto a jeho detaily */
+        .car-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
         .car-image {
-            width: 100%;
-            max-height: 500px;
+            width: 40%;
+            max-height: 300px;
             object-fit: cover;
             border-radius: 0.5rem;
+        }
+
+        .car-details {
+            width: 60%;
+            background-color: #333;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .car-details p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .description,
+        .additional-info {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #444;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .additional-info h3,
+        .description h3 {
             margin-bottom: 1rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feature-item {
+            background-color: #555;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .car-specs {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: #333;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .car-specs th,
+        .car-specs td {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+
+        .car-specs th {
+            background-color: #222;
+        }
+
+        .price-highlight {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffcc00;
         }
 
         /* Kalendář */
@@ -254,17 +326,65 @@
 
     <!-- Obsah stránky -->
     <div class="container">
-        <h2>{{ $car->name }}</h2>
-        <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}" class="car-image">
-        <p> <i class="fas fa-tachometer-alt"></i> Výkon kW: {{ $car->power }} </p>
-        <p> <i class="fas fa-car"></i> Dostupnost nyní: {{ $car->availability ? 'Ano' : 'Ne' }} </p>
-        <p> <i class="fas fa-calendar-alt"></i> Rok výroby: {{ $car->year }} </p>
-        <p> <i class="fas fa-cogs"></i> Motor: {{ $car->engine }} </p>
-        <p> <i class="fas fa-gears"></i> Převodovka: {{ $car->transmission }} </p>
-        <p> <i class="fas fa-gas-pump"></i> Spotřeba: {{ $car->fuel_consumption }} </p>
-        <p> <i class="fas fa-users"></i> Počet sedadel: {{ $car->seats }} </p>
-        <p> <strong><i class="fas fa-tag"></i> Cena: {{ $car->price_per_day }} Kč / den </strong></p>
-        <p><strong>{{ $car->description }}</strong></p>
+        <div>
+            <h2>{{ $car->name }}</h2>
+            <div class="car-container">
+                <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}" class="car-image">
+                <div class="car-details">
+                    <table class="car-specs">
+                        <tr>
+                            <th><i class="fas fa-tachometer-alt"></i> Výkon</th>
+                            <td>{{ $car->power }} kW</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-car"></i> Dostupnost</th>
+                            <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-calendar-alt"></i> Rok výroby</th>
+                            <td>{{ $car->year }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-cogs"></i> Motor</th>
+                            <td>{{ $car->engine }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-gears"></i> Převodovka</th>
+                            <td>{{ $car->transmission }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-gas-pump"></i> Spotřeba</th>
+                            <td>{{ $car->fuel_consumption }} l/100km</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-users"></i> Počet sedadel</th>
+                            <td>{{ $car->seats }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-user-shield"></i> Min. věk řidiče</th>
+                            <td>{{ $car->min_driver_age }} let</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-money-bill-wave"></i> Vratná kauce</th>
+                            <td>{{ $car->deposit }} Kč</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-shield-alt"></i> Pojištění</th>
+                            <td>{{ $car->insurance ? 'Ano' : 'Ne' }}</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-tag"></i> Cena</th>
+                            <td class="price-highlight">{{ $car->price_per_day }} Kč / den</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="description">
+                <h3>Popis vozu</h3>
+                <p>{{ $car->description }}</p>
+            </div>
+           
+        </div>
 
         <!-- Kalendář -->
         <h3>Kalendář dostupnosti</h3>
