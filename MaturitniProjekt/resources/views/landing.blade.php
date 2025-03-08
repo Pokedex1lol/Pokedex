@@ -630,7 +630,7 @@
             <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
         </ul>
         <div class="relative">
-            <button class="account-button">Můj účet</button>
+            <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
                 <!-- Odkaz na profil uživatele -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>

@@ -16,6 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cs.js"></script>
 
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Navbar */
         .navbar {
@@ -293,7 +295,7 @@
             <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
         </ul>
         <div class="relative">
-            <button class="account-button">Můj účet</button>
+            <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
                 <!-- Odkaz na profil uživatele -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
@@ -305,24 +307,6 @@
             </div>
         </div>
     </nav>
-
-
-    <!-- Zobrazení zprávy o úspěchu -->
-    @if (session('success'))
-    <script>
-        alert("{{ session('success') }}");
-    </script>
-    @endif
-
-    <!-- Zobrazení zprávy o chybě -->
-
-    @if ($errors->any())
-    <script>
-        alert("Chyba: {{ implode('\\n', $errors->all()) }}");
-    </script>
-    @endif
-
-
 
     <!-- Obsah stránky -->
     <div class="container">
@@ -383,16 +367,16 @@
                 <h3>Popis vozu</h3>
                 <p>{{ $car->description }}</p>
             </div>
-           
+
         </div>
 
         <!-- Kalendář -->
         <h3>Kalendář dostupnosti</h3>
         <div class="calendar">
             @foreach ($calendar as $day)
-            <div class="calendar-day {{ $day['reserved'] ? 'reserved' : '' }}">
-                {{ $day['date'] }}
-            </div>
+                <div class="calendar-day {{ $day['reserved'] ? 'reserved' : '' }}">
+                    {{ $day['date'] }}
+                </div>
             @endforeach
         </div>
 
@@ -413,6 +397,35 @@
             </form>
         </div>
     </div>
+
+    <!-- 1) Vyvolání SweetAlert2 při $errors->any() (validace/konflikt) -->
+    @if ($errors->any())
+        <script>
+            let allErrors = '';
+            @foreach ($errors->all() as $error)
+                allErrors += "{{ $error }}\n";
+            @endforeach
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Chyba',
+                text: allErrors,
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
+    <!-- 2) Vyvolání SweetAlert2 při session('success') -->
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Hotovo',
+                text: "{{ session('success') }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 </body>
 
 

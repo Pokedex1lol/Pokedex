@@ -13,7 +13,7 @@ class Reservation extends Model
     /**
      * Povolené sloupce pro hromadné přiřazení
      */
-    protected $fillable = ['start_date', 'end_date', 'car_id', 'user_id'];
+    protected $fillable = ['start_date', 'end_date', 'car_id', 'user_id', 'status'];
 
 
     /**

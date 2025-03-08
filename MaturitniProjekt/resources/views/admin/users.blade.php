@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             padding: 0;
             animation: fadeIn 1.5s ease;
         }
+
         .container {
             max-width: 900px;
             margin: 6rem auto 3rem;
@@ -22,6 +24,7 @@
             border-radius: 8px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
+
         .btn {
             display: inline-block;
             padding: 0.5rem 1rem;
@@ -32,6 +35,7 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
+
         .btn:hover {
             background-color: #BF353A;
             transform: scale(1.05);
@@ -137,9 +141,10 @@
         }
     </style>
 </head>
+
 <body>
-   <!-- Navbar -->
-   <nav class="navbar">
+    <!-- Navbar -->
+    <nav class="navbar">
         <div class="logo">
             <a href="{{ route('landing') }}">Půjčovna JDM</a>
         </div>
@@ -149,7 +154,7 @@
             <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
         </ul>
         <div class="relative">
-            <button class="account-button">Můj účet</button>
+            <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
                 <!-- Odkaz na profil uživatele -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
@@ -161,14 +166,15 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container">
         <h1 class="text-center">Správa Uživatelů</h1>
 
         <div class="d-flex justify-content-between mb-3">
-        <a href="{{ route('landing') }}" class="btn">Zpět na web</a>
+            <a href="{{ route('landing') }}" class="btn">Zpět na web</a>
+            <a href="{{ route('admin.index') }}" class="btn btn-warning">Admin panel</a>
         </div>
-        
+
         <table class="table table-striped table-dark">
             <thead>
                 <tr>
@@ -181,23 +187,25 @@
             </thead>
             <tbody>
                 @foreach($users as $user)
-                <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->is_admin ? 'Admin' : 'Uživatel' }}</td>
-                    <td>
-                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn">Upravit</a>
-                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn">Smazat</button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->is_admin ? 'Admin' : 'Uživatel' }}</td>
+                        <td>
+                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn">Upravit</a>
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn">Smazat</button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </body>
+
 </html>

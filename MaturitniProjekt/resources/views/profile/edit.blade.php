@@ -17,7 +17,7 @@
             animation: fadeIn 1.5s ease;
         }
 
-        @keyframes fadeIn {
+        /* @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
@@ -27,10 +27,10 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
+        } */
 
-         /* Navbar */
-         .navbar {
+        /* Navbar */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -140,7 +140,7 @@
             animation: slideIn 1s ease;
         }
 
-        @keyframes slideIn {
+        /* @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateX(-30px);
@@ -150,7 +150,7 @@
                 opacity: 1;
                 transform: translateX(0);
             }
-        }
+        } */
 
         h1 {
             text-align: center;
@@ -222,7 +222,7 @@
             <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
         </ul>
         <div class="relative">
-            <button class="account-button">Můj účet</button>
+            <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
                 <!-- Odkaz na profil uživatele -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>

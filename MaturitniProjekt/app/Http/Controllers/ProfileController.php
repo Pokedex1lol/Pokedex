@@ -65,4 +65,18 @@ class ProfileController extends Controller
 
         return redirect('/')->with('status', 'Account deleted.');
     }
+
+    // Nová metoda pro historii rezervací
+    public function history()
+    {
+        $user = Auth::user();
+
+        $completedReservations = Reservation::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->with('car')
+            ->get();
+
+        return view('profile.history', compact('completedReservations'));
+    }
 }
+

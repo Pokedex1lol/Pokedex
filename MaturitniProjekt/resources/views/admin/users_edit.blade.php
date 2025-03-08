@@ -139,7 +139,7 @@
             width: 100%;
         }
 
-        .form_group label{
+        .form_group label {
             color: black;
         }
 
@@ -161,6 +161,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -174,11 +175,25 @@
         }
 
         @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -195,7 +210,7 @@
             <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
         </ul>
         <div class="relative">
-            <button class="account-button">Můj účet</button>
+            <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
                 <!-- Odkaz na profil uživatele -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
@@ -212,13 +227,13 @@
         <h1 class="text-center">Upravit Uživatele</h1>
 
         @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
 
@@ -246,9 +261,11 @@
 
             <div class="form-group">
                 <label for="password">Nové heslo (nepovinné):</label>
-                <input type="password" id="password" name="password" class="form-control {{ $errors->has('password') ? 'error' : '' }}">
+                <input type="password" id="password" name="password"
+                    class="form-control {{ $errors->has('password') ? 'error' : '' }}">
                 <label for="password_confirmation">Potvrzení hesla:</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control {{ $errors->has('password') ? 'error' : '' }}">
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    class="form-control {{ $errors->has('password') ? 'error' : '' }}">
             </div>
 
             <button type="submit" class="btn">Uložit změny</button>

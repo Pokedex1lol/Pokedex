@@ -1,12 +1,13 @@
+{{-- resources/views/profile/history.blade.php --}}
 <!DOCTYPE html>
-<html lang="cs">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Můj profil</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <title>Historie rezervací</title>
+
+    <!-- SweetAlert2 (pokud používáš) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         /* Globální styl */
         body {
@@ -18,17 +19,18 @@
             animation: fadeIn 1.5s ease;
         }
 
-        /* @keyframes fadeIn {
+        /* 
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
-        } */
+        } 
+        */
 
         /* Navbar */
         .navbar {
@@ -97,8 +99,7 @@
             border: 1px solid #444;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 200px;
-            /* Fixní šířka dropdown menu */
+            width: 200px; /* Fixní šířka dropdown menu */
             text-align: left;
             overflow: hidden;
         }
@@ -132,8 +133,7 @@
         /* Kontejner */
         .container {
             max-width: 800px;
-            margin: 6rem auto 3rem;
-            /* Posun obsahu dolů kvůli navbaru */
+            margin: 6rem auto 3rem; /* posun kvůli fixnímu navbaru */
             background-color: #2C2C2C;
             padding: 2rem;
             border-radius: 8px;
@@ -141,17 +141,18 @@
             animation: slideIn 1s ease;
         }
 
-        /* @keyframes slideIn {
+        /* 
+        @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateX(-30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateX(0);
             }
-        } */
+        }
+        */
 
         h1 {
             text-align: center;
@@ -244,7 +245,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -259,7 +259,7 @@
         <div class="relative">
             <button class="account-button">{{ Auth::user()->name }}</button>
             <div class="dropdown-menu">
-                <!-- Odkaz na profil uživatele -->
+                <!-- Odkaz na profil -->
                 <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
                 <!-- Odhlášení -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -272,24 +272,12 @@
 
     <!-- Hlavní obsah -->
     <div class="container">
-        <h1>Vítejte, {{ auth()->user()->name }}!</h1>
+        <h1>Historie rezervací</h1>
 
-        <!-- Tlačítka v profilu -->
-        <div class="btn-container">
-            <a href="{{ route('profile.edit') }}" class="btn">Upravit profil</a>
-            <a href="{{ route('profile.history') }}" class="btn btn-info">Historie rezervací</a>
-            @if(Auth::user()->is_admin)
-                <!-- Zobrazíme jen adminovi -->
-                <a href="{{ route('admin.index') }}" class="btn btn-warning">Admin panel</a>
-            @endif
-        </div>
-
-        <!-- Seznam rezervací -->
-        <h2>Moje rezervace</h2>
-        @if ($reservations->isEmpty())
-            <p>Nemáte žádné rezervace.</p>
+        @if($completedReservations->isEmpty())
+            <p>Nemáte žádné dokončené rezervace.</p>
         @else
-            @foreach ($reservations as $reservation)
+            @foreach ($completedReservations as $reservation)
                 <div class="reservation-card">
                     <img src="{{ asset($reservation->car->image_url) }}" alt="{{ $reservation->car->name }}">
                     <div class="reservation-details">
@@ -306,23 +294,16 @@
                         </p>
                         <p class="price">Cena za den: {{ $reservation->car->price_per_day }} Kč</p>
                     </div>
-                    <form method="POST" action="{{ route('reservations.destroy', $reservation->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn">Zrušit rezervaci</button>
-                    </form>
                 </div>
             @endforeach
         @endif
 
-        <!-- Navigační tlačítka -->
         <div class="btn-container">
-            <a href="{{ route('dashboard') }}" class="btn">Zpět na dashboard</a>
-            <a href="{{ route('landing') }}" class="btn">Zpět na hlavní stránku</a>
+            <a href="{{ route('profile.index') }}" class="btn">Zpět na profil</a>
         </div>
     </div>
 
-    <!-- SweetAlert2 flash zprávy -->
+    <!-- SweetAlert2 flash zprávy (pokud je používáš) -->
     @if(session('success'))
         <script>
             Swal.fire({
@@ -345,6 +326,4 @@
         </script>
     @endif
 </body>
-
-
 </html>

@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     // Profilové routy
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // Zobrazí rezervace
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/history', [ProfileController::class, 'history'])->name('profile.history');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
