@@ -105,6 +105,7 @@
             flex-wrap: wrap;
             gap: 2rem;
             margin-bottom: 2rem;
+            width: 100vw;
         }
 
         /* Navbar */

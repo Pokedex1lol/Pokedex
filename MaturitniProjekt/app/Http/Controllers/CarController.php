@@ -9,10 +9,45 @@ use Illuminate\Support\Facades\Storage;
 class CarController extends Controller
 {
     // Zobrazení seznamu aut
-    public function index()
+    public function index(Request $request)
     {
-        $cars = Car::all();
-        return view('admin.cars', compact('cars'));
+        $query = Car::query();
+
+        // Filtr podle značky (např. 'brand')
+        if ($request->filled('brand')) {
+            $query->where('brand', $request->brand);
+        }
+
+        // Filtr podle cenového rozmezí
+        if ($request->filled('min_price')) {
+            $query->where('price_per_day', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price_per_day', '<=', $request->max_price);
+        }
+
+        // Filtr podle roku výroby (pokud máš sloupec 'year')
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+
+        // Řazení – například podle ceny vzestupně či sestupně
+        if ($request->filled('sort')) {
+            if ($request->sort === 'price_asc') {
+                $query->orderBy('price_per_day', 'asc');
+            } elseif ($request->sort === 'price_desc') {
+                $query->orderBy('price_per_day', 'desc');
+            }
+        }
+
+        $cars = $query->get();
+
+        // Pro výpis filtrů – například značka, rok, atd. – můžeš poslat i všechny dostupné hodnoty
+        // Například:
+        $brands = Car::select('brand')->distinct()->get();
+        $years  = Car::select('year')->distinct()->orderBy('year')->get();
+
+        return view('cars.index', compact('cars', 'brands', 'years'));
     }
 
     // Zobrazení formuláře pro přidání auta
