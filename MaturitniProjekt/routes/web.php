@@ -15,7 +15,7 @@ use App\Http\Controllers\CarController;
 
 // Domovská stránka
 Route::get('/', function () {
-    return view('home'); // Ujistěte se, že máte 'home.blade.php' v 'resources/views'
+    return view('home');
 })->name('home');
 
 // Přihlášení
