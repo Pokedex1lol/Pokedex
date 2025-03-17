@@ -20,105 +20,6 @@
             background-color: #181818;
         }
 
-         /* Navbar */
-         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: #292929;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar .logo {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .navbar a {
-            color: #E9E9E9;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .navbar a:hover {
-            color: #E44146;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-link {
-            font-size: 18px;
-        }
-
-        /* Dropdown Menu */
-        .relative {
-            position: relative;
-        }
-
-        .account-button {
-            background-color: transparent;
-            color: #E9E9E9;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 10px 15px;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #2C2C2C;
-            border: 1px solid #444;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 200px;
-            /* Fixní šířka dropdown menu */
-            text-align: left;
-            overflow: hidden;
-        }
-
-        .relative:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-link,
-        .logout-button {
-            display: block;
-            color: #E9E9E9;
-            text-decoration: none;
-            padding: 10px 15px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-link:hover,
-        .logout-button:hover {
-            background-color: #444;
-        }
-
-        .logout-button {
-            background: none;
-            border: none;
-            text-align: left;
-            cursor: pointer;
-            width: 100%;
-        }
-
         /* Hero */
         .hero {
             position: relative;
@@ -619,31 +520,9 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ route('landing') }}">Půjčovna JDM</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{ route('landing') }}" class="nav-link">Domů</a></li>
-            <li><a href="{{ route('dashboard') }}" class="nav-link">Auta</a></li>
-            <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
-        </ul>
-        <div class="relative">
-            <button class="account-button">{{ Auth::user()->name }}</button>
-            <div class="dropdown-menu">
-                <!-- Odkaz na profil uživatele -->
-                <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
-                <!-- Odhlášení -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="dropdown-link logout-button">Odhlásit se</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    @extends('layouts.app')
 
-
+    @section('content')
 
     <!-- Hero Section -->
     <section class="hero">
@@ -809,6 +688,7 @@
     <footer class="footer">
         <p>&copy; 2024 JeDeMe. Všechna práva vyhrazena.</p>
     </footer>
+    @endsection
 </body>
 
 </html>

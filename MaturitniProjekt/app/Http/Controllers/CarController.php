@@ -47,7 +47,7 @@ class CarController extends Controller
         $brands = Car::select('brand')->distinct()->get();
         $years  = Car::select('year')->distinct()->orderBy('year')->get();
 
-        return view('cars.index', compact('cars', 'brands', 'years'));
+        return view('admin.cars', compact('cars', 'brands', 'years'));
     }
 
     // Zobrazení formuláře pro přidání auta
@@ -62,6 +62,7 @@ class CarController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'price_per_day' => 'required|numeric|min:0',
             'availability' => 'required|in:1,0',
@@ -70,6 +71,7 @@ class CarController extends Controller
 
         $data = $request->only([
             'name',
+            'brand',
             'description',
             'price_per_day',
             'availability'
@@ -100,13 +102,14 @@ class CarController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price_per_day' => 'required|numeric|min:0',
             'availability' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->only(['name', 'description', 'price_per_day', 'availability']);
+        $data = $request->only(['name', 'brand', 'description', 'price_per_day', 'availability']);
 
         // Pokud je nahrán nový obrázek
         if ($request->hasFile('image')) {

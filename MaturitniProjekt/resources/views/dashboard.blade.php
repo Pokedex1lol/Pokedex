@@ -9,17 +9,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script>
         // Toggle visibility of the dropdown menu
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const accountButton = document.querySelector('.account-button');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            accountButton.addEventListener('click', function (event) {
+            accountButton.addEventListener('click', function(event) {
                 event.preventDefault();
                 dropdownMenu.classList.toggle('hidden');
             });
 
             // Close the dropdown if clicking outside of it
-            document.addEventListener('click', function (event) {
+            document.addEventListener('click', function(event) {
                 if (!accountButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.add('hidden');
                 }
@@ -107,163 +107,43 @@
             margin-bottom: 2rem;
             width: 100vw;
         }
-
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: #292929;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar .logo {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .navbar a {
-            color: #E9E9E9;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .navbar a:hover {
-            color: #E44146;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-link {
-            font-size: 18px;
-        }
-
-        /* Dropdown Menu */
-        .relative {
-            position: relative;
-        }
-
-        .account-button {
-            background-color: transparent;
-            color: #E9E9E9;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 10px 15px;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #2C2C2C;
-            border: 1px solid #444;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 200px;
-            /* Fixní šířka dropdown menu */
-            text-align: left;
-            overflow: hidden;
-        }
-
-        .relative:hover .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-link,
-        .logout-button {
-            display: block;
-            color: #E9E9E9;
-            text-decoration: none;
-            padding: 10px 15px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-link:hover,
-        .logout-button:hover {
-            background-color: #444;
-        }
-
-        .logout-button {
-            background: none;
-            border: none;
-            text-align: left;
-            cursor: pointer;
-            width: 100%;
-        }
     </style>
 </head>
 
 <body>
+    @extends('layouts.app')
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ route('landing') }}">Půjčovna JDM</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{ route('landing') }}" class="nav-link">Domů</a></li>
-            <li><a href="{{ route('dashboard') }}" class="nav-link">Auta</a></li>
-            <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
-        </ul>
-        <div class="relative">
-            <button class="account-button">{{ Auth::user()->name }}</button>
-            <div class="dropdown-menu">
-                <!-- Odkaz na profil uživatele -->
-                <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
-                <!-- Odhlášení -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="dropdown-link logout-button">Odhlásit se</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    @section('content')
 
     <!-- Container -->
     <div class="container">
         <h1>Vítejte, vyberte si auto k rezervaci!</h1>
         <div class="car-grid">
             @foreach ($cars as $car)
-                <div class="car-card">
-                    <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}">
-                    <h2>{{ $car->name }}</h2>
-                    <p>
-                        <i class="fas fa-tachometer-alt"></i> Výkon kW: {{ $car->power }}
-                    </p>
-                    <p>
-                        <i class="fas fa-car"></i> Dostupnost nyní: {{ $car->availability ? 'Ano' : 'Ne' }}
-                    </p>
-                    <p>
-                        <i class="fas fa-calendar-alt"></i> Rok výroby: {{ $car->year }}
-                    </p>
-                    <p>
-                        <i class="fas fa-info-circle"></i> {{ \Illuminate\Support\Str::limit($car->description, 80) }}
-                    </p>
-                    <p>
-                        <i class="fas fa-tag"></i> Cena: {{ $car->price_per_day }} Kč / den
-                    </p>
-                    <a href="{{ route('reservations.show', ['id' => $car->id]) }}" class="reserve-button">Rezervovat</a>
-                </div>
+            <div class="car-card">
+                <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}">
+                <h2>{{ $car->name }}</h2>
+                <p>
+                    <i class="fas fa-tachometer-alt"></i> Výkon kW: {{ $car->power }}
+                </p>
+                <p>
+                    <i class="fas fa-car"></i> Dostupnost nyní: {{ $car->availability ? 'Ano' : 'Ne' }}
+                </p>
+                <p>
+                    <i class="fas fa-calendar-alt"></i> Rok výroby: {{ $car->year }}
+                </p>
+                <p>
+                    <i class="fas fa-info-circle"></i> {{ \Illuminate\Support\Str::limit($car->description, 80) }}
+                </p>
+                <p>
+                    <i class="fas fa-tag"></i> Cena: {{ $car->price_per_day }} Kč / den
+                </p>
+                <a href="{{ route('reservations.show', ['id' => $car->id]) }}" class="reserve-button">Rezervovat</a>
+            </div>
             @endforeach
         </div>
     </div>
-
+    @endsection
 </body>
 
 </html>

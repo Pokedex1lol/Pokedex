@@ -22,6 +22,11 @@
             </div>
 
             <div class="form-group">
+                <label for="brand">značka:</label>
+                <input type="text" id="brand" name="brand" class="form-control" value="{{ $car->brand }}" required>
+            </div>
+
+            <div class="form-group">
                 <label for="description">Popis:</label>
                 <textarea id="description" name="description" class="form-control"
                     required>{{ $car->description }}</textarea>
@@ -83,8 +88,8 @@
                 <label for="image">Obrázek:</label>
                 <input type="file" id="image" name="image" class="form-control">
                 @if ($car->image_url)
-                    <p>Aktuální obrázek:</p>
-                    <img src="{{ asset($car->image_url) }}" alt="Aktuální obrázek" style="max-width: 200px;">
+                <p>Aktuální obrázek:</p>
+                <img src="{{ asset($car->image_url) }}" alt="Aktuální obrázek" style="max-width: 200px;">
                 @endif
             </div>
 
