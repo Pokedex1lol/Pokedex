@@ -22,7 +22,7 @@ class ReservationController extends Controller
     {
         // Validace vstupů - start_date nesmí být v minulosti, maximálně 30 dní dopředu
         $validated = $request->validate([
-            'start_date' => 'required|date|after_or_equal:today',
+            'start_date' => 'required|date|after:today',
             'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:' . Carbon::now()->addDays(30)->toDateString(),
             'car_id' => 'required|exists:cars,id',
         ], [

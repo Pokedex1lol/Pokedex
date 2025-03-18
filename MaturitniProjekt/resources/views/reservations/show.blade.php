@@ -6,18 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail vozu</title>
     <!-- Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
 
     <!-- Ikony -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-
     <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cs.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cs.js"></script> -->
+
+    <!-- FullCalendar CSS (verze 5) -->
+    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.css" rel="stylesheet">
+
+    <!-- Moment.js -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+
+    <!-- FullCalendar JS (verze 5) -->
+    <script type="module">
+        import { Calendar } from 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.js';
+        import dayGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.0/main.min.js';
+        import interactionPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.0/main.min.js';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                plugins: [dayGridPlugin, interactionPlugin],
+                events: [
+                    @foreach ($calendar as $day)
+                        {
+                            title: 'Rezervováno',
+                            start: '{{ $day['date'] }}',
+                            backgroundColor: '{{ $day['reserved'] ? '#DC3545' : '#28A745' }}', // Červená pro rezervované, zelená pro dostupné
+                            allDay: true
+                        },
+                    @endforeach
+            ],
+                editable: true,
+                droppable: false
+            });
+            calendar.render();
+        });
+    </script>
+
 
     <!-- Sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         /* Kontejner */
@@ -34,6 +73,10 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Auto a jeho detaily */
@@ -117,11 +160,12 @@
         }
 
         /* Kalendář */
-        .calendar {
+        /* .calendar {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-bottom: 2rem;
+            width: 60%;
         }
 
         .calendar-day {
@@ -143,6 +187,11 @@
 
         .calendar-day:hover {
             background-color: #218838;
+        } */
+
+        #calendar {
+            width: 100%;
+            margin-top: 2rem;
         }
 
         /* Formulář */
@@ -188,126 +237,154 @@
 <body>
     @extends('layouts.app')
 
-    @section('title', 'Detail vozu'))
-    <!-- Obsah stránky -->
-    <div class="container">
-        <div>
-            <h2>{{ $car->name }}</h2>
-            <div class="car-container">
-                <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}" class="car-image">
-                <div class="car-details">
-                    <table class="car-specs">
-                        <tr>
-                            <th><i class="fas fa-tachometer-alt"></i> Výkon</th>
-                            <td>{{ $car->power }} kW</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-car"></i> Dostupnost</th>
-                            <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-calendar-alt"></i> Rok výroby</th>
-                            <td>{{ $car->year }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-cogs"></i> Motor</th>
-                            <td>{{ $car->engine }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-gears"></i> Převodovka</th>
-                            <td>{{ $car->transmission }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-gas-pump"></i> Spotřeba</th>
-                            <td>{{ $car->fuel_consumption }} l/100km</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-users"></i> Počet sedadel</th>
-                            <td>{{ $car->seats }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-user-shield"></i> Min. věk řidiče</th>
-                            <td>{{ $car->min_driver_age }} let</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-money-bill-wave"></i> Vratná kauce</th>
-                            <td>{{ $car->deposit }} Kč</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-shield-alt"></i> Pojištění</th>
-                            <td>{{ $car->insurance ? 'Ano' : 'Ne' }}</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-tag"></i> Cena</th>
-                            <td class="price-highlight">{{ $car->price_per_day }} Kč / den</td>
-                        </tr>
-                    </table>
+    @section('content')
+        <!-- Obsah stránky -->
+        <div class="container">
+            <div>
+                <h2>{{ $car->name }}</h2>
+                <div class="car-container">
+                    <img src="{{ asset($car->image_url) }}" alt="{{ $car->name }}" class="car-image">
+                    <div class="car-details">
+                        <table class="car-specs">
+                            <tr>
+                                <th><i class="fas fa-tachometer-alt"></i> Výkon</th>
+                                <td>{{ $car->power }} kW</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-car"></i> Dostupnost</th>
+                                <td>{{ $car->availability ? 'Ano' : 'Ne' }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-calendar-alt"></i> Rok výroby</th>
+                                <td>{{ $car->year }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-cogs"></i> Motor</th>
+                                <td>{{ $car->engine }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-gears"></i> Převodovka</th>
+                                <td>{{ $car->transmission }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-gas-pump"></i> Spotřeba</th>
+                                <td>{{ $car->fuel_consumption }} l/100km</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-users"></i> Počet sedadel</th>
+                                <td>{{ $car->seats }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-user-shield"></i> Min. věk řidiče</th>
+                                <td>{{ $car->min_driver_age }} let</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-money-bill-wave"></i> Vratná kauce</th>
+                                <td>{{ $car->deposit }} Kč</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-shield-alt"></i> Pojištění</th>
+                                <td>{{ $car->insurance ? 'Ano' : 'Ne' }}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-tag"></i> Cena</th>
+                                <td class="price-highlight">{{ $car->price_per_day }} Kč / den</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="description">
-                <h3>Popis vozu</h3>
-                <p>{{ $car->description }}</p>
+                <div class="description">
+                    <h3>Popis vozu</h3>
+                    <p>{{ $car->description }}</p>
+                </div>
+
             </div>
 
+            <!-- Kalendář -->
+            <!-- <h3>Kalendář dostupnosti</h3>
+                                            <div class="calendar" id="calendar">
+                                                @foreach ($calendar as $day)
+                                                <div class="calendar-day {{ $day['reserved'] ? 'reserved' : '' }}">
+                                                    {{ $day['date'] }}
+                                                </div>
+                                                @endforeach
+                                            </div> -->
+
+            <h3>Kalendář dostupnosti</h3>
+            <div id="calendar"></div>
+
+            <!-- Rezervační formulář -->
+            <div class="form-container">
+                <form method="POST" action="{{ route('reservations.store') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="start_date" class="form-label">Datum od</label>
+                        <input type="date" id="start_date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date" class="form-label">Datum do</label>
+                        <input type="date" id="end_date" name="end_date" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="car_id" value="{{ $car->id }}">
+                    <button type="submit" class="reserve-button">Rezervovat</button>
+                </form>
+            </div>
         </div>
 
-        <!-- Kalendář -->
-        <h3>Kalendář dostupnosti</h3>
-        <div class="calendar">
-            @foreach ($calendar as $day)
-            <div class="calendar-day {{ $day['reserved'] ? 'reserved' : '' }}">
-                {{ $day['date'] }}
-            </div>
-            @endforeach
-        </div>
+        <!-- 1) Vyvolání SweetAlert2 při $errors->any() (validace/konflikt) -->
+        @if ($errors->any())
+            <script>
+                let allErrors = '';
+                @foreach($errors->all() as $error)
+                    allErrors += "{{ $error }}\n";
+                @endforeach
 
-        <!-- Rezervační formulář -->
-        <div class="form-container">
-            <form method="POST" action="{{ route('reservations.store') }}">
-                @csrf
-                <div class="form-group">
-                    <label for="start_date" class="form-label">Datum od</label>
-                    <input type="date" id="start_date" name="start_date" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="end_date" class="form-label">Datum do</label>
-                    <input type="date" id="end_date" name="end_date" class="form-control" required>
-                </div>
-                <input type="hidden" name="car_id" value="{{ $car->id }}">
-                <button type="submit" class="reserve-button">Rezervovat</button>
-            </form>
-        </div>
-    </div>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Chyba',
+                    text: allErrors,
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
 
-    <!-- 1) Vyvolání SweetAlert2 při $errors->any() (validace/konflikt) -->
-    @if ($errors->any())
-    <script>
-        let allErrors = '';
-        @foreach($errors - > all() as $error)
-        allErrors += "{{ $error }}\n";
-        @endforeach
-
-        Swal.fire({
-            icon: 'error',
-            title: 'Chyba',
-            text: allErrors,
-            confirmButtonText: 'OK'
-        });
-    </script>
-    @endif
-
-    <!-- 2) Vyvolání SweetAlert2 při session('success') -->
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Hotovo',
-            text: "{{ session('success') }}",
-            confirmButtonText: 'OK'
-        });
-    </script>
-    @endif
+        <!-- 2) Vyvolání SweetAlert2 při session('success') -->
+        @if(session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Hotovo',
+                    text: "{{ session('success') }}",
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
     @endsection
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    @foreach ($calendar as $day)
+                                {
+                            title: 'Rezervováno',
+                            start: '{{ $day['date'] }}',
+                            backgroundColor: '{{ $day['reserved'] ? '#DC3545' : '#28A745' }}', // Červená pro rezervované, zelená pro dostupné
+                            allDay: true
+                        },
+                    @endforeach
+                ],
+                editable: true,
+                droppable: false
+            });
+            calendar.render();
+        });
+    </script>
 </body>
 
 

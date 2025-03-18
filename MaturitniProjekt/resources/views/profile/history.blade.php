@@ -246,30 +246,10 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{ route('landing') }}">Půjčovna JDM</a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{ route('landing') }}" class="nav-link">Domů</a></li>
-            <li><a href="{{ route('dashboard') }}" class="nav-link">Auta</a></li>
-            <li><a href="{{ route('contact') }}" class="nav-link">Kontakt</a></li>
-        </ul>
-        <div class="relative">
-            <button class="account-button">{{ Auth::user()->name }}</button>
-            <div class="dropdown-menu">
-                <!-- Odkaz na profil -->
-                <a href="{{ route('profile.index') }}" class="dropdown-link">Profil</a>
-                <!-- Odhlášení -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="dropdown-link logout-button">Odhlásit se</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    @extends("layouts.app")
 
+    @section("content")
+    
     <!-- Hlavní obsah -->
     <div class="container">
         <h1>Historie rezervací</h1>
@@ -325,5 +305,6 @@
             });
         </script>
     @endif
+    @endsection
 </body>
 </html>
