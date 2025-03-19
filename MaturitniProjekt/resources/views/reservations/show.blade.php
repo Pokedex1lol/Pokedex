@@ -15,48 +15,22 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cs.js"></script> -->
 
-    <!-- FullCalendar CSS (verze 5) -->
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.css" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.0/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.11.0/main.min.css' rel='stylesheet' />
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.11.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.0/main.min.js'></script>
 
     <!-- Moment.js -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
 
-    <!-- FullCalendar JS (verze 5) -->
-    <script type="module">
-        import { Calendar } from 'https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.0/main.min.js';
-        import dayGridPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.0/main.min.js';
-        import interactionPlugin from 'https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.0/main.min.js';
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new Calendar(calendarEl, {
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                plugins: [dayGridPlugin, interactionPlugin],
-                events: [
-                    @foreach ($calendar as $day)
-                        {
-                            title: 'Rezervováno',
-                            start: '{{ $day['date'] }}',
-                            backgroundColor: '{{ $day['reserved'] ? '#DC3545' : '#28A745' }}', // Červená pro rezervované, zelená pro dostupné
-                            allDay: true
-                        },
-                    @endforeach
-            ],
-                editable: true,
-                droppable: false
-            });
-            calendar.render();
-        });
-    </script>
-
-
     <!-- Sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
     <style>
         /* Kontejner */
@@ -192,6 +166,40 @@
         #calendar {
             width: 100%;
             margin-top: 2rem;
+            background-color: #2C2C2C;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .fc {
+            background-color: #2C2C2C;
+            color: #E9E9E9;
+        }
+
+        .fc-theme-standard td, 
+        .fc-theme-standard th {
+            border-color: #444;
+        }
+
+        .fc-day-today {
+            background-color: #3C3C3C !important;
+        }
+
+        .fc-button {
+            background-color: #444 !important;
+            border-color: #555 !important;
+        }
+
+        .fc-button:hover {
+            background-color: #555 !important;
+        }
+
+        .fc-button-active {
+            background-color: #666 !important;
+        }
+
+        .fc-event {
+            cursor: pointer;
         }
 
         /* Formulář */
@@ -361,26 +369,29 @@
         @endif
     @endsection
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                plugins: ['dayGrid', 'timeGrid', 'interaction'],
                 events: [
                     @foreach ($calendar as $day)
-                                {
-                            title: 'Rezervováno',
+                        {
+                            title: '{{ $day['reserved'] ? 'Rezervováno' : 'Dostupné' }}',
                             start: '{{ $day['date'] }}',
-                            backgroundColor: '{{ $day['reserved'] ? '#DC3545' : '#28A745' }}', // Červená pro rezervované, zelená pro dostupné
+                            backgroundColor: '{{ $day['reserved'] ? '#DC3545' : '#28A745' }}',
                             allDay: true
                         },
                     @endforeach
                 ],
-                editable: true,
-                droppable: false
+                locale: 'cs',
+                firstDay: 1,
+                height: 'auto'
             });
             calendar.render();
         });
