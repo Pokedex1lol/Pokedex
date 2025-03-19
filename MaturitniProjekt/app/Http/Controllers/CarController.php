@@ -59,7 +59,6 @@ class CarController extends Controller
     // Uložení nového auta do databáze
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
@@ -67,6 +66,12 @@ class CarController extends Controller
             'price_per_day' => 'required|numeric|min:0',
             'availability' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'power' => 'required|string|max:255',
+            'engine' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'transmission' => 'required|string|max:255',
+            'fuel_consumption' => 'required|string|max:255',
+            'seats' => 'required|integer|min:1|max:9'
         ]);
 
         $data = $request->only([
@@ -74,7 +79,13 @@ class CarController extends Controller
             'brand',
             'description',
             'price_per_day',
-            'availability'
+            'availability',
+            'power',
+            'engine',
+            'year',
+            'transmission',
+            'fuel_consumption',
+            'seats'
         ]);
 
         if ($request->hasFile('image')) {
@@ -89,7 +100,6 @@ class CarController extends Controller
         return redirect()->route('admin.cars')
             ->with('success', 'Auto bylo úspěšně přidáno!');
     }
-
 
     // Zobrazení formuláře pro editaci auta
     public function edit(Car $car)
@@ -107,9 +117,27 @@ class CarController extends Controller
             'price_per_day' => 'required|numeric|min:0',
             'availability' => 'required|in:1,0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'power' => 'required|string|max:255',
+            'engine' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'transmission' => 'required|string|max:255',
+            'fuel_consumption' => 'required|string|max:255',
+            'seats' => 'required|integer|min:1|max:9'
         ]);
 
-        $data = $request->only(['name', 'brand', 'description', 'price_per_day', 'availability']);
+        $data = $request->only([
+            'name', 
+            'brand', 
+            'description', 
+            'price_per_day', 
+            'availability',
+            'power',
+            'engine',
+            'year',
+            'transmission',
+            'fuel_consumption',
+            'seats'
+        ]);
 
         // Pokud je nahrán nový obrázek
         if ($request->hasFile('image')) {

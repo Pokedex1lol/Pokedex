@@ -1,6 +1,8 @@
 <nav class="navbar">
     <div class="logo">
-        <a href="{{ route('landing') }}">Půjčovna JDM</a>
+        <a href="{{ route('landing') }}">
+            <img src="/images/JeDeMe-logo.png" alt="JeDeMe Logo">
+        </a>
     </div>
     <ul class="nav-links">
         <li><a href="{{ route('landing') }}" class="nav-link">Domů</a></li>

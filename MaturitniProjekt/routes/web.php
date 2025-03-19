@@ -11,6 +11,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\LandingController;
 
 
 // Domovská stránka
@@ -41,10 +42,8 @@ Route::get('/contact', function () {
     return view('contact'); // Ujisti se, že máš soubor 'contact.blade.php' v 'resources/views'
 })->name('contact');
 
-// CHYBĚJÍCÍ LANDING ROUTE
-Route::get('/landing', function () {
-    return view('landing'); // Ujisti se, že máš soubor 'landing.blade.php' v 'resources/views'
-})->middleware(['auth'])->name('landing');
+// Landing page (hlavní stránka)
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Dashboard (chráněná route)
 Route::middleware(['auth'])->group(function () {
