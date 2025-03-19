@@ -18,6 +18,8 @@
             font-family: Arial, sans-serif;
             color: #E9E9E9;
             background-color: #181818;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         /* Hero */
@@ -25,6 +27,7 @@
             position: relative;
             height: 100vh;
             overflow: hidden;
+            width: 100%;
         }
 
         .hero-img {
@@ -48,6 +51,10 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .hero-content h1 {
@@ -82,11 +89,15 @@
             color: #E9E9E9;
             padding: 50px 20px;
             text-align: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .section-ride .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .section-ride .section-title {
@@ -106,12 +117,15 @@
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .ride-text {
             flex: 1;
             min-width: 280px;
             text-align: left;
+            box-sizing: border-box;
         }
 
         .ride-text h3 {
@@ -161,6 +175,7 @@
             gap: 20px;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .image-placeholder {
@@ -217,6 +232,8 @@
             color: #E9E9E9;
             padding: 50px 20px;
             background-color: #181818;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .section-subtitle {
@@ -241,6 +258,9 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .model-button {
@@ -269,6 +289,7 @@
             width: 100%;
             max-width: 900px;
             margin: 0 auto;
+            box-sizing: border-box;
         }
 
         .model-image {
@@ -330,10 +351,16 @@
             /* Trochu větší vertikální mezera */
             gap: 30px;
             /* Větší mezera mezi textem a obrázkem */
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .text-content {
             max-width: 55%;
+            box-sizing: border-box;
         }
 
         .text-content h2 {
@@ -395,6 +422,7 @@
         .image-content {
             max-width: 40%;
             text-align: right;
+            box-sizing: border-box;
         }
 
         .image-content img {
@@ -450,6 +478,8 @@
             text-align: center;
             color: #ffffff;
             margin: 40px 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .support-section h2 {
@@ -470,6 +500,8 @@
             gap: 20px;
             max-width: 900px;
             margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .support-details div {
@@ -495,6 +527,8 @@
         .faq {
             background-color: #2C2C2C;
             padding: 50px 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .faq h2 {
@@ -515,6 +549,8 @@
             padding: 20px;
             text-align: center;
             color: #E9E9E9;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>

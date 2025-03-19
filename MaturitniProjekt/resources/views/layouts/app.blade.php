@@ -29,6 +29,8 @@
             top: 0;
             width: 100%;
             z-index: 1000;
+            box-sizing: border-box;
+            left: 0;
         }
 
         .navbar .logo {
@@ -113,6 +115,31 @@
             text-align: left;
             cursor: pointer;
             width: 100%;
+        }
+
+        /* Media queries pro responzivní navigaci */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .relative {
+                margin-top: 15px;
+            }
+            
+            .dropdown-menu {
+                width: 100%;
+                position: static;
+                margin-top: 10px;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
