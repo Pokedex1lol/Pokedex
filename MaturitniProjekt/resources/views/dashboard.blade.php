@@ -349,24 +349,28 @@
         }
 
         .btn-reserve {
-            background: linear-gradient(135deg, #E44146, #BF353A);
+            background-color: #E44146;
             color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
             width: 100%;
-            padding: 1rem;
-            font-size: 1rem;
-            margin-top: 1rem;
-            box-shadow: 0 4px 15px rgba(228, 65, 70, 0.3);
         }
 
         .btn-reserve:hover {
-            background: linear-gradient(135deg, #BF353A, #992C30);
+            background-color: #BF353A;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(228, 65, 70, 0.4);
         }
 
-        .btn-reserve:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(228, 65, 70, 0.3);
+        .btn-reserve:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Úprava tlačítek ve filtru */
@@ -464,6 +468,37 @@
         .car-card {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* Upozornění */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-warning {
+            background-color: #3D3000;
+            color: #FFB700;
+            border: 1px solid #4D3D00;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+        }
+
+        .verify-link {
+            color: #FFB700;
+            text-decoration: underline;
+            margin-left: 0.5rem;
+        }
+
+        .verify-link:hover {
+            color: #FFC940;
+        }
     </style>
 </head>
 
@@ -554,6 +589,14 @@
 
             <!-- Seznam aut -->
             <div class="cars-content">
+                @if($verificationNeeded)
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Pro rezervaci auta je potřeba ověřit váš email.
+                        <a href="{{ route('verification.notice') }}" class="verify-link">Ověřit email</a>
+                    </div>
+                @endif
+
                 <div class="car-grid">
                     @foreach($cars as $car)
                         <div class="car-card">
@@ -586,9 +629,19 @@
                                         <span class="car-info-value">{{ number_format($car->price_per_day, 0, ',', ' ') }} Kč</span>
                                     </div>
                                 </div>
-                                <a href="{{ route('reservations.show', $car->id) }}" class="btn btn-reserve">
-                                    <i class="fas fa-calendar-plus"></i> Rezervovat
-                                </a>
+                                @if($canReserve)
+                                    <a href="{{ route('reservations.show', ['id' => $car->id]) }}" class="btn-reserve">
+                                        Rezervovat
+                                    </a>
+                                @elseif(auth()->check())
+                                    <button class="btn-reserve" disabled title="Pro rezervaci je potřeba ověřit email">
+                                        Rezervovat
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn-reserve">
+                                        Pro rezervaci se přihlaste
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endforeach

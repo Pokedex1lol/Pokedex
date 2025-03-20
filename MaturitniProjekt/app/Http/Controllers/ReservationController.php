@@ -7,6 +7,7 @@ use App\Models\Reservation;
 use App\Models\Car;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Carbon\CarbonPeriod;
 
 class ReservationController extends Controller
 {
@@ -98,29 +99,19 @@ class ReservationController extends Controller
     public function show($id)
     {
         $car = Car::findOrFail($id);
-        
-        // Získání všech rezervací pro toto auto
         $reservations = Reservation::where('car_id', $id)
             ->where('end_date', '>=', now())
             ->get();
 
-        // Vytvoření pole rezervovaných dnů pro Flatpickr
         $reservedDates = [];
         foreach ($reservations as $reservation) {
-            $start = Carbon::parse($reservation->start_date);
-            $end = Carbon::parse($reservation->end_date);
-            
-            // Přidání všech dnů mezi start_date a end_date (včetně)
-            while ($start->lte($end)) {
-                $reservedDates[] = $start->format('Y-m-d');
-                $start->addDay();
+            $period = CarbonPeriod::create($reservation->start_date, $reservation->end_date);
+            foreach ($period as $date) {
+                $reservedDates[] = $date->format('Y-m-d');
             }
         }
 
-        return view('reservations.show', [
-            'car' => $car,
-            'reservedDates' => $reservedDates
-        ]);
+        return view('reservations.show', compact('car', 'reservedDates'));
     }
 
     // Zruší rezervaci

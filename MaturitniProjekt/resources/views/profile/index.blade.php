@@ -242,7 +242,147 @@
         .text-secondary {
             color: #6c757d;
         }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background-color: #E44146;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .verification-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .verified {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .unverified {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .verification-status i {
+            margin-right: 0.5rem;
+        }
+
+        .profile-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: #E44146;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(228, 65, 70, 0.3);
+        }
+
+        .action-button i {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .empty-reservations {
+            text-align: center;
+            padding: 2rem;
+            margin: 1rem 0 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .empty-reservations p {
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .reservations-list {
+            margin: 1.5rem 0 2rem;
+        }
+
+        .reservations-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reservations-section h2 {
+            margin-bottom: 1.5rem;
+            color: #E44146;
+            font-size: 1.5rem;
+            text-align: center;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -252,53 +392,97 @@
     
     <!-- Hlavní obsah -->
     <div class="container">
-        <h1>Vítejte, {{ auth()->user()->name }}!</h1>
-
-        <!-- Tlačítka v profilu -->
-        <div class="btn-container">
-            <a href="{{ route('profile.edit') }}" class="btn">Upravit profil</a>
-            <a href="{{ route('profile.history') }}" class="btn btn-info">Historie rezervací</a>
-            @if(Auth::user()->is_admin)
-                <!-- Zobrazíme jen adminovi -->
-                <a href="{{ route('admin.index') }}" class="btn btn-warning">Admin panel</a>
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {{ substr(auth()->user()->name, 0, 1) }}
+            </div>
+            <h1>{{ auth()->user()->name }}</h1>
+            
+            @if(auth()->user()->hasVerifiedEmail())
+                <div class="verification-status verified">
+                    <i class="fas fa-check-circle"></i>
+                    Email ověřen
+                </div>
+            @else
+                <div class="verification-status unverified">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Email není ověřen
+                    <form action="{{ route('verification.send') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-link">Poslat ověřovací email znovu</button>
+                    </form>
+                </div>
             @endif
         </div>
 
-        <!-- Seznam rezervací -->
-        <h2>Moje rezervace</h2>
-        @if ($reservations->isEmpty())
-            <p>Nemáte žádné rezervace.</p>
-        @else
-            @foreach ($reservations as $reservation)
-                <div class="reservation-card">
-                    <img src="{{ asset($reservation->car->image_url) }}" alt="{{ $reservation->car->name }}">
-                    <div class="reservation-details">
-                        <p><strong>{{ $reservation->car->name }}</strong></p>
-                        <p>Datum: {{ $reservation->start_date }} - {{ $reservation->end_date }}</p>
-                        <p>
-                            @if ($reservation->status === 'pending')
-                                <span class="text-warning">Čeká</span>
-                            @elseif($reservation->status === 'completed')
-                                <span class="text-success">Dokončeno</span>
-                            @else
-                                <span class="text-secondary">Neznámý</span>
-                            @endif
-                        </p>
-                        <p class="price">Cena za den: {{ $reservation->car->price_per_day }} Kč</p>
-                    </div>
-                    <form method="POST" action="{{ route('reservations.destroy', $reservation->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn">Zrušit rezervaci</button>
-                    </form>
-                </div>
-            @endforeach
-        @endif
+        <div class="profile-info">
+            <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ auth()->user()->email }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Člen od</span>
+                <span class="info-value">{{ auth()->user()->created_at->format('d.m.Y') }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Role</span>
+                <span class="info-value">{{ auth()->user()->is_admin ? 'Administrátor' : 'Uživatel' }}</span>
+            </div>
+        </div>
 
-        <!-- Navigační tlačítka -->
-        <div class="btn-container">
-            <a href="{{ route('dashboard') }}" class="btn">Zpět na dashboard</a>
-            <a href="{{ route('landing') }}" class="btn">Zpět na hlavní stránku</a>
+        <div class="action-buttons">
+            <a href="{{ route('profile.edit') }}" class="action-button">
+                <i class="fas fa-user-edit"></i>
+                Upravit profil
+            </a>
+            <a href="{{ route('profile.history') }}" class="action-button">
+                <i class="fas fa-history"></i>
+                Historie rezervací
+            </a>
+            <a href="{{ route('password.request') }}" class="action-button" style="background-color: #ffd700; color: #222;" onclick="event.preventDefault(); document.getElementById('password-form').submit();">
+                <i class="fas fa-key"></i>
+                Změnit heslo
+            </a>
+            <form id="password-form" action="{{ route('password.email') }}" method="POST" style="display: none;">
+                @csrf
+                <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+            </form>
+            @if(auth()->user()->is_admin)
+            <a href="{{ route('admin.index') }}" class="action-button" style="background-color: #ffc107; color: #222;">
+                <i class="fas fa-user-shield"></i>
+                Admin panel
+            </a>
+            @endif
+        </div>
+
+        <div class="reservations-section">
+            <h2>Moje aktivní rezervace</h2>
+            
+            @if ($reservations->where('status', 'pending')->isEmpty())
+                <div class="empty-reservations">
+                    <p>Nemáte žádné aktivní rezervace.</p>
+                    <a href="{{ route('dashboard') }}" class="btn">Prohlédnout dostupná auta</a>
+                </div>
+            @else
+                <div class="reservations-list">
+                    @foreach ($reservations->where('status', 'pending') as $reservation)
+                        <div class="reservation-card">
+                            <img src="{{ asset($reservation->car->image_url) }}" alt="{{ $reservation->car->brand }} {{ $reservation->car->model }}">
+                            <div class="reservation-details">
+                                <p><strong>{{ $reservation->car->brand }} {{ $reservation->car->model }}</strong></p>
+                                <p>Termín: {{ \Carbon\Carbon::parse($reservation->start_date)->format('d.m.Y') }} - {{ \Carbon\Carbon::parse($reservation->end_date)->format('d.m.Y') }}</p>
+                                <p class="price">{{ number_format($reservation->car->price_per_day, 0, ',', ' ') }} Kč/den</p>
+                                <p><span class="text-warning">Čeká na schválení</span></p>
+                            </div>
+                            <form method="POST" action="{{ route('reservations.destroy', $reservation->id) }}" onsubmit="return confirm('Opravdu chcete zrušit tuto rezervaci?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn">Zrušit</button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 
@@ -307,7 +491,7 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Hotovo',
+                title: 'Hotovo!',
                 text: "{{ session('success') }}",
                 confirmButtonText: 'OK'
             });

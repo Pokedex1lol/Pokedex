@@ -54,6 +54,17 @@ class DashboardController extends Controller
         // Stránkování - 9 aut na stránku
         $cars = $query->paginate(9);
 
+        $canReserve = false;
+        $verificationNeeded = false;
+
+        if (auth()->check()) {
+            if (auth()->user()->hasVerifiedEmail()) {
+                $canReserve = true;
+            } else {
+                $verificationNeeded = true;
+            }
+        }
+
         return view('dashboard', [
             'cars' => $cars,
             'brands' => $brands,
@@ -63,7 +74,9 @@ class DashboardController extends Controller
             'max_db_price' => $max_db_price,
             'min_db_power' => $min_db_power,
             'max_db_power' => $max_db_power,
-            'filters' => $request->all()
+            'filters' => $request->all(),
+            'canReserve' => $canReserve,
+            'verificationNeeded' => $verificationNeeded
         ]);
     }
 }

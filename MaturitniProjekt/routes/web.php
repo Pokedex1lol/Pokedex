@@ -12,6 +12,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\LandingController;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 
 // Domovská stránka
@@ -45,22 +51,31 @@ Route::get('/contact', function () {
 // Landing page (hlavní stránka)
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// Dashboard (chráněná route)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Dashboard (veřejně přístupný)
+Route::get('/dashboard', function () {
+    if (auth()->check() && !auth()->user()->hasVerifiedEmail()) {
+        return redirect()->route('verification.notice');
+    }
+    return app(DashboardController::class)->index(request());
+})->name('dashboard');
 
-    // Profilové routy
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index'); // Zobrazí rezervace
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/history', [ProfileController::class, 'history'])->name('profile.history');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+// Chráněné routy vyžadující ověření emailu
+Route::middleware(['auth', 'verified'])->group(function () {
     // Rezervace
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::get('/reservations/{id}', [ReservationController::class, 'show'])->name('reservations.show');
-    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy'); // Mazání rezervace
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+});
+
+// Chráněné routy vyžadující pouze přihlášení
+Route::middleware(['auth'])->group(function () {
+    // Profilové routy
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/history', [ProfileController::class, 'history'])->name('profile.history');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 // Admin Panel (chráněné routy pouze pro admina)
@@ -98,6 +113,34 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::put('/admin/reservations/{reservation}/complete', [ReservationController::class, 'complete'])->name('admin.reservations.complete');
 });
 
+// Email Verification Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/email/verify', [VerificationController::class, 'notice'])
+        ->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['signed'])
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
+});
+
+// Password Reset Routes
+Route::middleware('guest')->group(function () {
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+});
 
 // Auth routes
 require __DIR__ . '/auth.php';

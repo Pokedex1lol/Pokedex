@@ -47,7 +47,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return redirect()->route('profile.edit')->with('status', 'Profile updated successfully!');
+        return redirect()->route('profile.index')->with('success', 'Profil byl úspěšně aktualizován!');
     }
 
     /**
@@ -71,12 +71,12 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $completedReservations = Reservation::where('user_id', $user->id)
-            ->where('status', 'completed')
+        $reservations = Reservation::where('user_id', $user->id)
             ->with('car')
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('profile.history', compact('completedReservations'));
+        return view('profile.history', compact('reservations'));
     }
 }
 

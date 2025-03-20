@@ -105,6 +105,18 @@
             color: #E9E9E9;
             font-size: 14px;
         }
+
+        .forgot-password-link {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #888;
+            text-decoration: none;
+        }
+
+        .forgot-password-link:hover {
+            color: #E44146;
+        }
     </style>
 </head>
 
@@ -137,6 +149,8 @@
                 placeholder="{{ $errors->has('password') ? $errors->first('password') : 'Zadejte heslo' }}"
                 class="{{ $errors->has('password') ? 'error' : '' }}"
                 required>
+
+            <a href="{{ route('password.request') }}" class="forgot-password-link">Zapomněli jste heslo?</a>
 
             <button type="submit" class="btn">Přihlásit se</button>
         </form>

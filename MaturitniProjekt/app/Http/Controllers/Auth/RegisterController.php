@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-
-
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -22,7 +21,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-
         // Validace
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -36,11 +34,13 @@ class RegisterController extends Controller
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
         ]);
+
+        event(new Registered($user));
     
         // Přihlášení uživatele
         auth()->login($user);
     
         // Přesměrování na dashboard
-        return redirect()->route('landing');
+        return redirect()->route('verification.notice');
     }
 }
