@@ -1104,7 +1104,7 @@
                 </div>
                 <div class="dominate-cta">
                     <h3>Síla v každé zatáčce!</h3>
-                    <a href="#" class="btn-rezervujte">Rezervujte nyní →</a>
+                    <a href="#" class="btn-rezervujte">Rezervujte nyní </a>
                 </div>
             </div>
         </div>
