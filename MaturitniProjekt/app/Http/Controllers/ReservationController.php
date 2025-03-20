@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['store', 'destroy']);
+    }
+
     // Zobrazení stránky rezervací pro admina
     public function adminIndex()
     {
@@ -20,16 +25,31 @@ class ReservationController extends Controller
     // Uloží rezervaci
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pro vytvoření rezervace se musíte přihlásit.'
+            ], 401);
+        }
+
         // Validace vstupů - start_date nesmí být v minulosti, maximálně 30 dní dopředu
-        $validated = $request->validate([
-            'start_date' => 'required|date|after:today',
-            'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:' . Carbon::now()->addDays(30)->toDateString(),
-            'car_id' => 'required|exists:cars,id',
-        ], [
-            'start_date.after_or_equal' => 'Datum začátku musí být dnešní nebo pozdější.',
-            'end_date.after_or_equal' => 'Datum konce musí být stejné nebo pozdější než datum začátku.',
-            'end_date.before_or_equal' => 'Rezervace může být maximálně 30 dní dopředu.',
-        ]);
+        try {
+            $validated = $request->validate([
+                'start_date' => 'required|date|after_or_equal:today',
+                'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:' . Carbon::now()->addDays(30)->toDateString(),
+                'car_id' => 'required|exists:cars,id',
+            ], [
+                'start_date.after_or_equal' => 'Datum začátku musí být dnešní nebo pozdější.',
+                'end_date.after_or_equal' => 'Datum konce musí být stejné nebo pozdější než datum začátku.',
+                'end_date.before_or_equal' => 'Rezervace může být maximálně 30 dní dopředu.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chyba validace',
+                'errors' => $e->errors()
+            ], 422);
+        }
 
         // Kontrola konfliktů s existujícími rezervacemi
         $conflict = Reservation::where('car_id', $validated['car_id'])
@@ -44,25 +64,33 @@ class ReservationController extends Controller
             ->exists();
 
         if ($conflict) {
-            // Vložíme chybu do $errors a vrátíme se s původními vstupy
-            return back()
-                ->withInput()
-                ->withErrors(['Tento termín je již rezervován.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Tento termín je již rezervován.'
+            ], 409);
         }
 
-        // Uložení rezervace do databáze
-        Reservation::create([
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
-            'car_id' => $validated['car_id'],
-            'user_id' => Auth::id(),
-            'status' => 'pending',
-        ]);
+        try {
+            // Uložení rezervace do databáze
+            $reservation = Reservation::create([
+                'start_date' => $validated['start_date'],
+                'end_date' => $validated['end_date'],
+                'car_id' => $validated['car_id'],
+                'user_id' => Auth::id(),
+                'status' => 'pending',
+            ]);
 
-        // Přesměrování s úspěšnou zprávou
-        return redirect()
-            ->route('reservations.show', $validated['car_id'])
-            ->with('success', 'Rezervace byla úspěšně vytvořena.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Rezervace byla úspěšně vytvořena',
+                'redirect' => route('reservations.show', $validated['car_id'])
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Při vytváření rezervace došlo k chybě'
+            ], 500);
+        }
     }
 
 
@@ -70,47 +98,57 @@ class ReservationController extends Controller
     public function show($id)
     {
         $car = Car::findOrFail($id);
-        $calendar = [];
-        $startDate = Carbon::now();
-        $endDate = Carbon::now()->addDays(30);
+        
+        // Získání všech rezervací pro toto auto
+        $reservations = Reservation::where('car_id', $id)
+            ->where('end_date', '>=', now())
+            ->get();
 
-        for ($date = $startDate; $date <= $endDate; $date->addDay()) {
-            // Zkontroluj, jestli je den zarezervovaný
-            $reserved = Reservation::where('car_id', $id)
-                ->where('start_date', '<=', $date->toDateString())
-                ->where('end_date', '>=', $date->toDateString())
-                ->exists();
-
-            $calendar[] = [
-                'date' => $date->toDateString(),
-                'reserved' => $reserved
-            ];
+        // Vytvoření pole rezervovaných dnů pro Flatpickr
+        $reservedDates = [];
+        foreach ($reservations as $reservation) {
+            $start = Carbon::parse($reservation->start_date);
+            $end = Carbon::parse($reservation->end_date);
+            
+            // Přidání všech dnů mezi start_date a end_date (včetně)
+            while ($start->lte($end)) {
+                $reservedDates[] = $start->format('Y-m-d');
+                $start->addDay();
+            }
         }
 
         return view('reservations.show', [
             'car' => $car,
-            'calendar' => $calendar
+            'reservedDates' => $reservedDates
         ]);
     }
 
     // Zruší rezervaci
     public function destroy($id)
     {
-        $reservation = Reservation::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        $reservation = Reservation::findOrFail($id);
+        $isAdminRoute = request()->route()->getName() === 'admin.reservations.destroy';
 
-        // Pokud je rezervace dokončená, akci zablokujeme
-        if ($reservation->status === 'completed') {
-            return redirect()->route('profile.index')
-                ->with('error', 'Dokončenou rezervaci nelze smazat.');
+        // Admin může mazat pouze přes admin panel
+        if (Auth::user()->is_admin) {
+            if (!$isAdminRoute) {
+                return redirect()->back()->with('error', 'Jako admin můžete mazat rezervace pouze přes admin panel.');
+            }
+            $reservation->delete();
+            return redirect()->back()->with('success', 'Rezervace byla úspěšně smazána.');
         }
 
-        // V opačném případě rezervaci odstraníme
-        $reservation->delete();
+        // Běžný uživatel může smazat jen své nedokončené rezervace
+        if ($reservation->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Nemáte oprávnění smazat tuto rezervaci.');
+        }
 
-        return redirect()->route('profile.index')
-            ->with('success', 'Rezervace byla úspěšně smazána.');
+        if ($reservation->status === 'completed') {
+            return redirect()->back()->with('error', 'Dokončenou rezervaci nelze smazat.');
+        }
+
+        $reservation->delete();
+        return redirect()->route('profile.index')->with('success', 'Rezervace byla úspěšně smazána.');
     }
 
 

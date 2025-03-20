@@ -64,14 +64,31 @@ class CarController extends Controller
             'brand' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'price_per_day' => 'required|numeric|min:0',
-            'availability' => 'required|in:1,0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'availability' => 'required|boolean',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'power' => 'required|string|max:255',
             'engine' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'transmission' => 'required|string|max:255',
             'fuel_consumption' => 'required|string|max:255',
-            'seats' => 'required|integer|min:1|max:9'
+            'seats' => 'required|integer|min:1|max:9',
+            'max_speed' => 'required|integer|min:0',
+            'acceleration' => 'required|numeric|min:0',
+            'torque' => 'required|integer|min:0',
+            'fuel_tank' => 'required|integer|min:0',
+            'color' => 'required|string|max:255',
+            'mileage' => 'required|integer|min:0',
+            'origin_country' => 'required|string|max:255',
+            'service_book' => 'required|boolean',
+            'air_conditioning' => 'required|boolean',
+            'airbags' => 'required|integer|min:0',
+            'parking_camera' => 'required|boolean',
+            'heated_seats' => 'required|boolean',
+            'safety_features' => 'required|string',
+            'deposit' => 'required|integer|min:0',
+            'min_driver_age' => 'required|integer|min:18',
+            'min_license_length' => 'required|integer|min:0',
+            'mileage_limit' => 'required|integer|min:0'
         ]);
 
         $data = $request->only([
@@ -85,8 +102,31 @@ class CarController extends Controller
             'year',
             'transmission',
             'fuel_consumption',
-            'seats'
+            'seats',
+            'max_speed',
+            'acceleration',
+            'torque',
+            'fuel_tank',
+            'color',
+            'mileage',
+            'origin_country',
+            'service_book',
+            'air_conditioning',
+            'airbags',
+            'parking_camera',
+            'heated_seats',
+            'safety_features',
+            'deposit',
+            'min_driver_age',
+            'min_license_length',
+            'mileage_limit'
         ]);
+
+        // Zpracování safety_features jako JSON pole
+        if (isset($data['safety_features'])) {
+            $safety_features = array_map('trim', explode(',', $data['safety_features']));
+            $data['safety_features'] = json_encode($safety_features);
+        }
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -113,16 +153,33 @@ class CarController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price_per_day' => 'required|numeric|min:0',
-            'availability' => 'required|in:1,0',
+            'availability' => 'required|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'power' => 'required|string|max:255',
             'engine' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'transmission' => 'required|string|max:255',
             'fuel_consumption' => 'required|string|max:255',
-            'seats' => 'required|integer|min:1|max:9'
+            'seats' => 'required|integer|min:1|max:9',
+            'max_speed' => 'required|integer|min:0',
+            'acceleration' => 'required|numeric|min:0',
+            'torque' => 'required|integer|min:0',
+            'fuel_tank' => 'required|integer|min:0',
+            'color' => 'required|string|max:255',
+            'mileage' => 'required|integer|min:0',
+            'origin_country' => 'required|string|max:255',
+            'service_book' => 'required|boolean',
+            'air_conditioning' => 'required|boolean',
+            'airbags' => 'required|integer|min:0',
+            'parking_camera' => 'required|boolean',
+            'heated_seats' => 'required|boolean',
+            'safety_features' => 'required|string',
+            'deposit' => 'required|integer|min:0',
+            'min_driver_age' => 'required|integer|min:18',
+            'min_license_length' => 'required|integer|min:0',
+            'mileage_limit' => 'required|integer|min:0'
         ]);
 
         $data = $request->only([
@@ -136,8 +193,31 @@ class CarController extends Controller
             'year',
             'transmission',
             'fuel_consumption',
-            'seats'
+            'seats',
+            'max_speed',
+            'acceleration',
+            'torque',
+            'fuel_tank',
+            'color',
+            'mileage',
+            'origin_country',
+            'service_book',
+            'air_conditioning',
+            'airbags',
+            'parking_camera',
+            'heated_seats',
+            'safety_features',
+            'deposit',
+            'min_driver_age',
+            'min_license_length',
+            'mileage_limit'
         ]);
+
+        // Zpracování safety_features jako JSON pole
+        if (isset($data['safety_features'])) {
+            $safety_features = array_map('trim', explode(',', $data['safety_features']));
+            $data['safety_features'] = json_encode($safety_features);
+        }
 
         // Pokud je nahrán nový obrázek
         if ($request->hasFile('image')) {
@@ -146,7 +226,7 @@ class CarController extends Controller
                 unlink(public_path($car->image_url));
             }
 
-            // Uložení nového obrázku do public/images/
+            // Uložení nového obrázku
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('images'), $filename);

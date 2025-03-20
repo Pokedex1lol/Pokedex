@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'name',
         'brand',
@@ -48,10 +45,4 @@ class Car extends Model
         'heated_seats' => 'boolean',
         'safety_features' => 'array'
     ];
-
-    // Vztah s rezervacemi
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-}
+} 

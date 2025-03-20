@@ -248,7 +248,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="content-container">
-            <h1 class="page-title">Upravit Auto</h1>
+            <h1 class="page-title">Upravit auto</h1>
             
             @if(session('success'))
                 <script>
@@ -279,109 +279,188 @@
             @endif
             
             @if ($errors->any())
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        Swal.fire({
-                            title: 'Ověření se nezdařilo!',
-                            html: `<ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>`,
-                            icon: 'error',
-                            confirmButtonText: 'Opravit',
-                            confirmButtonColor: '#E44146'
-                        });
-                    });
-                </script>
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
-            <form action="{{ route('admin.cars.update', $car->id) }}" method="POST" enctype="multipart/form-data" id="editCarForm">
+            <form method="POST" action="{{ route('admin.cars.update', $car->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
+
+                <!-- Základní informace -->
                 <div class="form-section">
-                    <h3><i class="fas fa-info-circle"></i> Základní informace</h3>
+                    <h2>Základní informace</h2>
                     <div class="form-group">
-                        <label for="name">Název:</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ $car->name }}" required>
+                        <label for="brand">Značka</label>
+                        <input type="text" id="brand" name="brand" class="form-control" value="{{ old('brand', $car->brand) }}" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="brand">Značka:</label>
-                        <input type="text" id="brand" name="brand" class="form-control" value="{{ $car->brand }}" required>
+                        <label for="name">Model</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $car->name) }}" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="description">Popis:</label>
-                        <textarea id="description" name="description" class="form-control" required>{{ $car->description }}</textarea>
+                        <label for="year">Rok výroby</label>
+                        <input type="number" id="year" name="year" class="form-control" value="{{ old('year', $car->year) }}" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="price_per_day">Cena za den (Kč):</label>
-                        <input type="number" id="price_per_day" name="price_per_day" class="form-control" value="{{ $car->price_per_day }}" required>
+                        <label for="price_per_day">Cena za den (Kč)</label>
+                        <input type="number" id="price_per_day" name="price_per_day" class="form-control" value="{{ old('price_per_day', $car->price_per_day) }}" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="availability">Dostupné:</label>
-                        <select id="availability" name="availability" class="form-control">
-                            <option value="1" {{ $car->availability == 1 ? 'selected' : '' }}>Ano</option>
-                            <option value="0" {{ $car->availability == 0 ? 'selected' : '' }}>Ne</option>
+                        <label for="description">Popis</label>
+                        <textarea id="description" name="description" class="form-control" required>{{ old('description', $car->description) }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="availability">Dostupnost</label>
+                        <select id="availability" name="availability" class="form-control" required>
+                            <option value="1" {{ old('availability', $car->availability) == '1' ? 'selected' : '' }}>Dostupné</option>
+                            <option value="0" {{ old('availability', $car->availability) == '0' ? 'selected' : '' }}>Nedostupné</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="form-section">
-                    <h3><i class="fas fa-cogs"></i> Technické parametry</h3>
                     <div class="form-group">
-                        <label for="power">Výkon (kW):</label>
-                        <input type="number" name="power" id="power" class="form-control" value="{{ $car->power }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="engine">Typ motoru:</label>
-                        <input type="text" name="engine" id="engine" class="form-control" value="{{ $car->engine }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="year">Rok výroby:</label>
-                        <input type="number" name="year" id="year" class="form-control" value="{{ $car->year }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="transmission">Převodovka:</label>
-                        <select name="transmission" id="transmission" class="form-control">
-                            <option value="manuální" {{ $car->transmission == 'manuální' ? 'selected' : '' }}>Manuální</option>
-                            <option value="automatická" {{ $car->transmission == 'automatická' ? 'selected' : '' }}>Automatická</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fuel_consumption">Spotřeba (l/100 km):</label>
-                        <input type="number" step="0.1" name="fuel_consumption" id="fuel_consumption" class="form-control" value="{{ $car->fuel_consumption }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="seats">Počet míst:</label>
-                        <input type="number" name="seats" id="seats" class="form-control" value="{{ $car->seats }}">
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3><i class="fas fa-image"></i> Obrázek</h3>
-                    <div class="form-group">
-                        <label for="image">Nahrát nový obrázek:</label>
-                        <input type="file" id="image" name="image" class="form-control">
-                        @if ($car->image_url)
-                        <p>Aktuální obrázek:</p>
-                        <img src="{{ asset($car->image_url) }}" alt="Aktuální obrázek" class="img-preview">
+                        <label for="image">Fotografie</label>
+                        @if($car->image_url)
+                            <img src="{{ asset($car->image_url) }}" alt="Aktuální fotografie" class="img-preview">
                         @endif
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                        <small class="text-muted">Nahrajte novou fotografii pouze pokud chcete změnit současnou.</small>
+                    </div>
+                </div>
+
+                <!-- Hlavní specifikace -->
+                <div class="form-section">
+                    <h2>Hlavní specifikace</h2>
+                    <div class="form-group">
+                        <label for="power">Výkon</label>
+                        <input type="text" id="power" name="power" class="form-control" value="{{ old('power', $car->power) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="engine">Motor</label>
+                        <input type="text" id="engine" name="engine" class="form-control" value="{{ old('engine', $car->engine) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transmission">Převodovka</label>
+                        <input type="text" id="transmission" name="transmission" class="form-control" value="{{ old('transmission', $car->transmission) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fuel_consumption">Spotřeba</label>
+                        <input type="text" id="fuel_consumption" name="fuel_consumption" class="form-control" value="{{ old('fuel_consumption', $car->fuel_consumption) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seats">Počet sedadel</label>
+                        <input type="number" id="seats" name="seats" class="form-control" value="{{ old('seats', $car->seats) }}" required>
+                    </div>
+                </div>
+
+                <!-- Technické parametry -->
+                <div class="form-section">
+                    <h2>Technické parametry</h2>
+                    <div class="form-group">
+                        <label for="max_speed">Maximální rychlost (km/h)</label>
+                        <input type="number" id="max_speed" name="max_speed" class="form-control" value="{{ old('max_speed', $car->max_speed) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="acceleration">Zrychlení 0-100 km/h (s)</label>
+                        <input type="number" id="acceleration" name="acceleration" class="form-control" step="0.1" value="{{ old('acceleration', $car->acceleration) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="torque">Točivý moment (Nm)</label>
+                        <input type="number" id="torque" name="torque" class="form-control" value="{{ old('torque', $car->torque) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fuel_tank">Objem nádrže (l)</label>
+                        <input type="number" id="fuel_tank" name="fuel_tank" class="form-control" value="{{ old('fuel_tank', $car->fuel_tank) }}" required>
+                    </div>
+                </div>
+
+                <!-- Další informace -->
+                <div class="form-section">
+                    <h2>Další informace</h2>
+                    <div class="form-group">
+                        <label for="color">Barva</label>
+                        <input type="text" id="color" name="color" class="form-control" value="{{ old('color', $car->color) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mileage">Najeto (km)</label>
+                        <input type="number" id="mileage" name="mileage" class="form-control" value="{{ old('mileage', $car->mileage) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="origin_country">Země původu</label>
+                        <input type="text" id="origin_country" name="origin_country" class="form-control" value="{{ old('origin_country', $car->origin_country) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service_book">Servisní knížka</label>
+                        <select id="service_book" name="service_book" class="form-control" required>
+                            <option value="1" {{ old('service_book', $car->service_book) == '1' ? 'selected' : '' }}>Ano</option>
+                            <option value="0" {{ old('service_book', $car->service_book) == '0' ? 'selected' : '' }}>Ne</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Výbava -->
+                <div class="form-section">
+                    <h2>Výbava</h2>
+                    <div class="form-group">
+                        <label for="air_conditioning">Klimatizace</label>
+                        <select id="air_conditioning" name="air_conditioning" class="form-control" required>
+                            <option value="1" {{ old('air_conditioning', $car->air_conditioning) == '1' ? 'selected' : '' }}>Ano</option>
+                            <option value="0" {{ old('air_conditioning', $car->air_conditioning) == '0' ? 'selected' : '' }}>Ne</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="airbags">Počet airbagů</label>
+                        <input type="number" id="airbags" name="airbags" class="form-control" value="{{ old('airbags', $car->airbags) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="parking_camera">Parkovací kamera</label>
+                        <select id="parking_camera" name="parking_camera" class="form-control" required>
+                            <option value="1" {{ old('parking_camera', $car->parking_camera) == '1' ? 'selected' : '' }}>Ano</option>
+                            <option value="0" {{ old('parking_camera', $car->parking_camera) == '0' ? 'selected' : '' }}>Ne</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="heated_seats">Vyhřívaná sedadla</label>
+                        <select id="heated_seats" name="heated_seats" class="form-control" required>
+                            <option value="1" {{ old('heated_seats', $car->heated_seats) == '1' ? 'selected' : '' }}>Ano</option>
+                            <option value="0" {{ old('heated_seats', $car->heated_seats) == '0' ? 'selected' : '' }}>Ne</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="safety_features">Bezpečnostní prvky (oddělené čárkou)</label>
+                        <input type="text" id="safety_features" name="safety_features" class="form-control" value="{{ old('safety_features', implode(', ', json_decode($car->safety_features) ?? [])) }}" placeholder="Např. ABS, ESP, ASR">
+                    </div>
+                </div>
+
+                <!-- Podmínky pronájmu -->
+                <div class="form-section">
+                    <h2>Podmínky pronájmu</h2>
+                    <div class="form-group">
+                        <label for="deposit">Kauce (Kč) - vratná záloha</label>
+                        <input type="number" id="deposit" name="deposit" class="form-control" value="{{ old('deposit', $car->deposit) }}" required>
+                        <small class="text-muted">Částka, kterou musí zákazník složit před zapůjčením jako pojistku. Bude vrácena po vrácení vozidla v pořádku.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="min_driver_age">Minimální věk řidiče</label>
+                        <input type="number" id="min_driver_age" name="min_driver_age" class="form-control" value="{{ old('min_driver_age', $car->min_driver_age) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="min_license_length">Délka řidičského průkazu (roky)</label>
+                        <input type="number" id="min_license_length" name="min_license_length" class="form-control" value="{{ old('min_license_length', $car->min_license_length) }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mileage_limit">Denní limit kilometrů</label>
+                        <input type="number" id="mileage_limit" name="mileage_limit" class="form-control" value="{{ old('mileage_limit', $car->mileage_limit) }}" required>
                     </div>
                 </div>
 
                 <div class="form-buttons">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Uložit změny</button>
-                    <a href="{{ route('admin.cars') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Zpět</a>
+                    <button type="submit" class="btn btn-primary">Uložit změny</button>
+                    <a href="{{ route('admin.cars') }}" class="btn btn-secondary">Zrušit</a>
                 </div>
             </form>
         </div>
