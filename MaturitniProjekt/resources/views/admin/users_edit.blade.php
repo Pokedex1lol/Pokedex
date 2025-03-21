@@ -330,14 +330,21 @@
                     <div class="form-group">
                         <label>Role:</label>
                         <div class="role-select">
-                            <label style="display: inline-block; margin-right: 20px;">
-                                <input type="radio" name="role" value="user" {{ $user->role == 'user' ? 'checked' : '' }}>
-                                Uživatel
-                            </label>
-                            <label style="display: inline-block;">
-                                <input type="radio" name="role" value="admin" {{ $user->role == 'admin' ? 'checked' : '' }}>
-                                Administrátor
-                            </label>
+                            @if(auth()->user()->id === $user->id && $user->is_admin)
+                                <div style="color: #888;">
+                                    <i class="fas fa-info-circle"></i> Nemůžete změnit svoji roli administrátora
+                                </div>
+                                <input type="hidden" name="is_admin" value="1">
+                            @else
+                                <label style="display: inline-block; margin-right: 20px;">
+                                    <input type="radio" name="is_admin" value="0" {{ !$user->is_admin ? 'checked' : '' }}>
+                                    Uživatel
+                                </label>
+                                <label style="display: inline-block;">
+                                    <input type="radio" name="is_admin" value="1" {{ $user->is_admin ? 'checked' : '' }}>
+                                    Administrátor
+                                </label>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -296,7 +296,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            @if($user->role == 'admin')
+                            @if($user->is_admin)
                                 <span class="badge bg-success">Admin</span>
                             @else
                                 <span class="badge bg-secondary">Uživatel</span>

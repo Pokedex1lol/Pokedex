@@ -470,7 +470,7 @@
                                 <p class="price">{{ number_format($reservation->car->price_per_day, 0, ',', ' ') }} Kč/den</p>
                                 <p><span class="text-warning">Čeká na schválení</span></p>
                             </div>
-                            <form method="POST" action="{{ route('reservations.destroy', $reservation->id) }}" onsubmit="return confirm('Opravdu chcete zrušit tuto rezervaci?');">
+                            <form method="POST" action="{{ route('reservations.destroy', $reservation->id) }}" class="cancel-reservation-form">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn">Zrušit</button>
@@ -498,12 +498,38 @@
         <script>
             Swal.fire({
                 icon: 'error',
-                title: 'Chyba',
+                title: 'Chyba!',
                 text: "{{ session('error') }}",
                 confirmButtonText: 'OK'
             });
         </script>
     @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelForms = document.querySelectorAll('.cancel-reservation-form');
+            cancelForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'Zrušit rezervaci?',
+                        text: 'Opravdu chcete zrušit tuto rezervaci?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#E44146',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ano, zrušit',
+                        cancelButtonText: 'Ne, ponechat'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
     @endsection
 </body>
 

@@ -39,6 +39,11 @@ class UserController extends Controller
             'is_admin.required' => 'Role je povinná.',
         ]);
 
+        // Kontrola, zda admin nemění svoji vlastní roli
+        if (auth()->user()->id === $user->id && $user->is_admin && !$request->is_admin) {
+            return redirect()->back()->with('error', 'Nemůžete si odebrat administrátorská práva.');
+        }
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->is_admin = $request->is_admin;
