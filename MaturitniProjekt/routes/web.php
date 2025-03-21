@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordController;
 
 
 // Domovská stránka
@@ -128,6 +129,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Password Reset Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/change-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.change');
+    
+    Route::post('/change-password', [PasswordController::class, 'update'])
+        ->name('password.update');
+});
+
+// Password Reset Routes (for guests)
 Route::middleware('guest')->group(function () {
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

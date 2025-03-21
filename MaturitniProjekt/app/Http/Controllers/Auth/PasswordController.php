@@ -7,9 +7,18 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
 
 class PasswordController extends Controller
 {
+    /**
+     * Show the form for changing password.
+     */
+    public function create(): View
+    {
+        return view('auth.change-password');
+    }
+
     /**
      * Update the user's password.
      */
@@ -24,6 +33,6 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('status', 'password-updated');
+        return redirect()->route('profile.index')->with('status', 'Heslo bylo úspěšně změněno.');
     }
 }

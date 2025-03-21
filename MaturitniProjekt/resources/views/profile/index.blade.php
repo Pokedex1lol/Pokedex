@@ -439,14 +439,10 @@
                 <i class="fas fa-history"></i>
                 Historie rezervací
             </a>
-            <a href="{{ route('password.request') }}" class="action-button" style="background-color: #ffd700; color: #222;" onclick="event.preventDefault(); document.getElementById('password-form').submit();">
+            <a href="{{ route('password.change') }}" class="action-button" style="background-color: #ffd700; color: #222;">
                 <i class="fas fa-key"></i>
                 Změnit heslo
             </a>
-            <form id="password-form" action="{{ route('password.email') }}" method="POST" style="display: none;">
-                @csrf
-                <input type="hidden" name="email" value="{{ auth()->user()->email }}">
-            </form>
             @if(auth()->user()->is_admin)
             <a href="{{ route('admin.index') }}" class="action-button" style="background-color: #ffc107; color: #222;">
                 <i class="fas fa-user-shield"></i>
