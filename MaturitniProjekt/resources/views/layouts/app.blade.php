@@ -34,6 +34,13 @@
             left: 0;
         }
 
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
         .navbar .logo {
             height: 60px;
             display: flex;
@@ -130,32 +137,66 @@
             width: 100%;
         }
 
+        /* Hamburger menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .hamburger-menu span {
+            width: 100%;
+            height: 3px;
+            background-color: #E9E9E9;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background-color: #292929;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
         /* Media queries pro responzivní navigaci */
         @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 15px;
+            }
+
             .navbar .logo {
                 height: 40px;
             }
-            
-            .navbar {
-                flex-direction: column;
-                padding: 15px;
+
+            .hamburger-menu {
+                display: flex;
             }
-            
-            .nav-links {
-                margin-top: 15px;
-                width: 100%;
-                justify-content: center;
+
+            .nav-links, .desktop-profile {
+                display: none;
             }
-            
-            .relative {
-                margin-top: 15px;
-            }
-            
-            .dropdown-menu {
-                width: 100%;
-                position: static;
-                margin-top: 10px;
-                box-shadow: none;
+
+            .mobile-menu.active {
+                display: flex;
             }
         }
 
