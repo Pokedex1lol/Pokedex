@@ -11,6 +11,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -18,6 +19,8 @@
             color: #E9E9E9;
             background-color: #181818;
             line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         /* Hero Section */
@@ -225,24 +228,8 @@
         .stat-item {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-        }
-
-        .stat-number {
-            font-size: clamp(2.2rem, 2.8vw, 3.2rem);
-            font-weight: bold;
-            color: #E44146;
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-
-        .stat-text {
-            font-size: clamp(0.7rem, 0.85vw, 0.85rem);
-            color: #E9E9E9;
-            opacity: 0.7;
-            max-width: 120px;
-            line-height: 1.4;
+            align-items: center;
+            text-align: center;
         }
 
         .section-images-wrapper {
@@ -280,35 +267,253 @@
             object-fit: cover;
         }
 
-        .btn-objevte {
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: inline-flex;
-            align-items: center;
-            padding: 1.2rem 3rem;
-            background-color: #E44146;
-            color: #E9E9E9;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 2;
+        /* Media Queries pro mobilní zařízení */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 0 20px 40px;
+                min-height: 90vh;
+                align-items: center;
+                width: 100%;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 2rem;
+                width: 100%;
+                padding: 0;
+            }
+
+            .hero-text {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+                margin-bottom: 1rem;
+                word-wrap: break-word;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .hero-right {
+                align-items: center;
+                width: 100%;
+                padding: 0 10px;
+            }
+
+            .hero-tagline {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero-tagline-text {
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero-tagline h3 {
+                font-size: 1.6rem;
+                white-space: normal;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            /* Statistiky */
+            .stats-section {
+                gap: 30px;
+                padding: 40px 20px;
+                width: 100%;
+            }
+
+            .stat-number {
+                font-size: 2.2rem;
+            }
+
+            .stat-text {
+                font-size: 0.9rem;
+            }
+
+            /* Tvá brána k dokonalé jízdě */
+            .section-ride {
+                padding: 60px 20px;
+                width: 100%;
+            }
+
+            .section-ride .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                width: 100%;
+            }
+
+            .section-ride-content {
+                text-align: center;
+                padding: 0;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+                padding: 0 10px;
+            }
+
+            .section-description {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .excellence-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+                padding: 0 10px;
+            }
+
+            .excellence-item {
+                text-align: center;
+            }
+
+            .excellence-item h3 {
+                font-size: 1.3rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                padding: 0 10px;
+            }
+
+            .section-images {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 0 10px;
+            }
+
+            .section-image {
+                aspect-ratio: 16/9;
+                width: 100%;
+            }
+
+            /* Dominuj asfaltu */
+            .dominate {
+                padding: 60px 5%;
+            }
+
+            .dominate-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .dominate-content {
+                text-align: center;
+            }
+
+            .progress-bars {
+                margin: 2rem 0;
+            }
+
+            .progress-item {
+                margin-bottom: 1.5rem;
+            }
+
+            .dominate-image {
+                height: 300px;
+                border-radius: 8px;
+            }
+
+            .dominate-cta {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .btn-rezervujte {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Kontaktní sekce */
+            .contact-section {
+                padding: 60px 20px;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 1.5rem;
+            }
+
+            .contact-item {
+                text-align: center;
+                align-items: center;
+            }
+
+            .contact-item h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .contact-item p {
+                font-size: 0.95rem;
+            }
+
+            /* Často kladené otázky */
+            .faq-section {
+                padding: 60px 20px;
+            }
+
+            .faq-grid {
+                gap: 1rem;
+                padding: 0 10px;
+            }
+
+            .faq-question {
+                padding: 1.2rem;
+                font-size: 0.95rem;
+            }
         }
 
-        .btn-objevte:hover {
-            background-color: #bf353a;
-            transform: translateY(-2px);
-        }
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
 
-        .btn-objevte::after {
-            content: '→';
-            margin-left: 1rem;
-            font-size: 1.2rem;
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+                padding: 0.9rem 1.8rem;
+                max-width: 280px;
+            }
         }
 
         /* Inženýři přesnosti */
@@ -412,28 +617,34 @@
         }
 
         .btn-objevte {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: #E34146;
-            color: #fff;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: inline-flex;
+            align-items: center;
+            padding: 1.2rem 3rem;
+            background-color: #E44146;
+            color: #E9E9E9;
             text-decoration: none;
-            border-radius: 6px;
-            transition: background 0.3s;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
         }
 
         .btn-objevte:hover {
-            background: #c83238;
+            background-color: #bf353a;
+            transform: translateY(-2px);
         }
 
-        @media (max-width: 768px) {
-            .model-nav {
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-
-            .hero-section {
-                padding: 1rem 5%;
-            }
+        .btn-objevte::after {
+            content: '→';
+            margin-left: 1rem;
+            font-size: 1.2rem;
         }
 
         .hero-image-container {
@@ -658,19 +869,6 @@
             margin-left: 0.5rem;
         }
 
-        @media (max-width: 768px) {
-            .dominate-container {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .dominate-cta {
-                flex-direction: column;
-                gap: 1.5rem;
-                align-items: flex-start;
-            }
-        }
-
         .faq-section {
             padding: 120px 8%;
             text-align: center;
@@ -726,8 +924,10 @@
         }
 
         .expand-btn {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -737,6 +937,7 @@
             color: #fff;
             cursor: pointer;
             transition: transform 0.3s ease;
+            font-size: 12px;
         }
 
         .faq-answer {
@@ -756,90 +957,150 @@
         }
 
         @media (max-width: 768px) {
-            .faq-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            /* Základní úpravy pro mobilní zařízení */
+            .hero-section, .dominate {
+                padding: 40px 20px;
+                width: 100%;
+                overflow: hidden;
             }
 
-            .faq-section {
-                padding: 60px 5%;
-            }
-
-            .faq-section .section-title {
+            .hero-section h1 {
                 font-size: 2rem;
+                word-wrap: break-word;
+                hyphens: auto;
             }
-        }
 
-        /* Kontaktní sekce */
-        .contact-section {
-            padding: 120px 8%;
-            background-color: #181818;
-            text-align: center;
-        }
-
-        .contact-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .contact-section .section-title {
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
-            color: #fff;
-        }
-
-        .contact-section .section-description {
-            max-width: 600px;
-            margin: 0 auto 4rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 3rem;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .contact-item h3 {
-            color: #E34146;
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-item p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 1024px) {
-            .contact-info {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 2rem;
+            .hero-description {
+                font-size: 1rem;
+                padding: 0 10px;
             }
-        }
 
-        @media (max-width: 640px) {
-            .contact-info {
+            /* Model navigace */
+            .model-nav {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 0.3rem;
+                padding: 0 10px;
+                width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .model-btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.5rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Skrytí scrollbaru pro Chrome, Safari a novější prohlížeče */
+            .model-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Dominuj asfaltu sekce */
+            .dominate-container {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 2rem;
+                padding: 0;
             }
 
-            .contact-section {
-                padding: 60px 5%;
+            .dominate-content {
+                padding: 0 10px;
+            }
+
+            .dominate-content .section-title {
+                font-size: 2rem;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+
+            .dominate-content .section-description {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .progress-bars {
+                margin: 1.5rem 0;
+            }
+
+            .progress-item {
+                margin-bottom: 1rem;
+            }
+
+            .dominate-right {
+                padding: 0 10px;
+            }
+
+            .dominate-image {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+            }
+
+            .dominate-cta {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 0 10px;
+            }
+
+            .dominate-cta h3 {
+                font-size: 1.2rem;
+                width: 100%;
+            }
+
+            /* Obrázky a karty */
+            .models-card, .model-image {
+                width: 100%;
+                height: auto;
+            }
+
+            .slideshow-container {
+                height: auto;
+                max-height: 400px;
+            }
+
+            .slide {
+                position: relative;
+                height: auto;
+            }
+
+            .image-overlay {
+                position: relative;
+                padding: 1rem;
+            }
+
+            .image-overlay h3 {
+                font-size: 1.5rem;
+            }
+
+            /* Obecné úpravy pro lepší čitelnost */
+            .section-title, h1, h2, h3 {
+                max-width: 100%;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .model-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-section h1, .dominate-content .section-title {
+                font-size: 1.8rem;
+            }
+
+            .image-overlay h3 {
+                font-size: 1.3rem;
+            }
+
+            .progress-info {
+                font-size: 0.9rem;
             }
         }
 
@@ -919,6 +1180,92 @@
 
             .footer {
                 padding: 60px 5% 30px;
+            }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 120px 8%;
+            text-align: center;
+            background-color: #181818;
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item h3 {
+            color: #E44146;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Úprava statistik pro zarovnání na střed */
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Úprava responzivity pro tlačítka modelů */
+        @media (max-width: 768px) {
+            .model-nav {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 0.3rem;
+                padding: 0 10px;
+                width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            /* Skrytí scrollbaru pro Chrome, Safari a novější prohlížeče */
+            .model-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .model-btn {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.5rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Úprava FAQ pro mobilní zobrazení */
+            .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            /* Úprava kontaktní sekce pro mobilní zobrazení */
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 1.5rem;
             }
         }
     </style>

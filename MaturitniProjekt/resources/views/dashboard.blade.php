@@ -199,60 +199,64 @@
 
         /* Karty aut */
         .car-card {
+            width: 100%;
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
             background: linear-gradient(145deg, #2C2C2C, #252525);
             border-radius: 15px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .car-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 24px rgba(228, 65, 70, 0.2);
         }
 
         .car-img {
-            height: 250px;
-            object-fit: cover;
             width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .car-card:hover .car-img {
-            transform: scale(1.05);
+            height: 200px;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
         }
 
         .car-body {
-            padding: 1.5rem;
-            flex-grow: 1;
+            width: 100%;
+            flex: 1;
             display: flex;
             flex-direction: column;
+            padding: 15px;
         }
 
         .car-title {
             font-size: 1.5rem;
             font-weight: 700;
             color: #E44146;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .car-description {
+            color: #888;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
             text-align: center;
         }
 
         .car-info {
+            flex: 1;
+            width: 100%;
             display: grid;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
+            gap: 8px;
+            margin-bottom: 1rem;
         }
 
         .car-info-item {
+            width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #444;
+            padding: 4px 0;
         }
 
         .car-info-label {
@@ -349,6 +353,7 @@
         }
 
         .btn-reserve {
+            margin-top: auto;
             background-color: #E44146;
             color: white;
             padding: 0.8rem 1.5rem;
@@ -386,9 +391,9 @@
         /* Grid pro karty */
         .car-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
         }
 
         /* Stránkování */
@@ -444,12 +449,190 @@
         }
 
         @media (max-width: 768px) {
-            .car-grid {
+            .dashboard-layout {
                 grid-template-columns: 1fr;
             }
 
+            .dashboard-layout .filter-section {
+                display: none;
+            }
+
+            #mobile-filters {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 85%;
+                background: #1D1D1D;
+                z-index: 1001;
+                padding: 15px;
+                overflow-y: auto;
+            }
+
+            #mobile-filters.active {
+                display: block;
+            }
+
+            #mobile-filters h2 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            #mobile-filters .filter-group {
+                margin-bottom: 0.8rem;
+            }
+
+            #mobile-filters .form-label {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+
+            #mobile-filters .form-select {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            #mobile-filters .slider-container {
+                margin: 1rem 0;
+            }
+
+            #mobile-filters .slider-values {
+                font-size: 0.8rem;
+                margin-top: 0.3rem;
+            }
+
+            #mobile-filters .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            #mobile-filters .noUi-target {
+                height: 6px;
+            }
+
+            #mobile-filters .noUi-handle {
+                width: 16px !important;
+                height: 16px !important;
+                top: -5px !important;
+                right: -8px !important;
+            }
+
+            .filter-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(3px);
+                z-index: 1000;
+            }
+
+            .filter-overlay.active {
+                display: block;
+            }
+
+            .filter-toggle {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: #E44146;
+                color: white;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                box-shadow: 0 4px 15px rgba(228, 65, 70, 0.3);
+                z-index: 1002;
+                cursor: pointer;
+            }
+
+            .car-info-item:nth-child(5) {
+                display: none !important;
+            }
+
+            .car-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .car-img {
+                height: 100px;
+            }
+
+            .car-body {
+                padding: 8px 10px;
+            }
+
+            .car-title {
+                font-size: 0.85rem;
+                margin-bottom: 2px;
+            }
+
+            .car-description {
+                font-size: 0.75rem;
+                margin-bottom: 3px;
+                -webkit-line-clamp: 1;
+                padding: 0 4px;
+            }
+
+            .car-info {
+                gap: 1px;
+                margin-bottom: 3px;
+                padding: 0 2px;
+            }
+
+            .car-info-item {
+                padding: 1px 4px;
+                font-size: 0.7rem;
+                margin-bottom: 0;
+                line-height: 1.2;
+            }
+
+            .car-info-label {
+                color: #888;
+                font-size: 0.7rem;
+                padding-right: 4px;
+            }
+
+            .car-info-value {
+                font-size: 0.7rem;
+                padding-left: 4px;
+            }
+
+            .btn-reserve {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+                margin-top: 3px;
+                height: 24px;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 2px;
+                margin-right: 2px;
+            }
+
             .car-card {
-                max-width: 100%;
+                min-height: unset;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .filter-toggle,
+            .filter-overlay {
+                display: none !important;
+            }
+
+            .car-info-item {
+                display: flex !important;
             }
         }
 
@@ -510,8 +693,8 @@
         <h1>Naše vozidla</h1>
 
         <div class="dashboard-layout">
-            <!-- Filtrovací sekce -->
-            <div class="filter-section">
+            <!-- Filtry -->
+            <div class="filter-section" id="mobile-filters">
                 <h2><i class="fas fa-filter"></i> Filtry</h2>
                 <form action="{{ route('dashboard') }}" method="GET">
                     <div class="filter-group">
@@ -603,6 +786,7 @@
                             <img src="{{ asset($car->image_url) }}" class="car-img" alt="{{ $car->name }}">
                             <div class="car-body">
                                 <h5 class="car-title">{{ $car->name }}</h5>
+                                <p class="car-description">{{ Str::limit($car->description, 100) }}</p>
                                 <div class="car-info">
                                     <div class="car-info-item">
                                         <span class="car-info-label">Značka:</span>
@@ -614,7 +798,7 @@
                                     </div>
                                     <div class="car-info-item">
                                         <span class="car-info-label">Výkon:</span>
-                                        <span class="car-info-value">{{ $car->power }}</span>
+                                        <span class="car-info-value">{{ $car->power }} kW</span>
                                     </div>
                                     <div class="car-info-item">
                                         <span class="car-info-label">Motor:</span>
@@ -657,67 +841,101 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const filterToggle = document.getElementById('filterToggle');
+            const mobileFilters = document.getElementById('mobile-filters');
+            const filterOverlay = document.getElementById('filterOverlay');
+
+            if (filterToggle && mobileFilters && filterOverlay) {
+                // Přidání event listeneru pro tlačítko filtrů
+                filterToggle.addEventListener('click', function() {
+                    mobileFilters.classList.toggle('active');
+                    filterOverlay.classList.toggle('active');
+                    document.body.style.overflow = mobileFilters.classList.contains('active') ? 'hidden' : '';
+                });
+
+                // Zavření filtrů při kliknutí na overlay
+                filterOverlay.addEventListener('click', function() {
+                    mobileFilters.classList.remove('active');
+                    filterOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+
+                // Zavření filtrů při kliknutí na tlačítka uvnitř filtrů
+                const filterButtons = mobileFilters.querySelectorAll('button[type="submit"], a.btn-secondary');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        mobileFilters.classList.remove('active');
+                        filterOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
             // Inicializace cenového slideru
             const priceSlider = document.getElementById('price-slider');
-            noUiSlider.create(priceSlider, {
-                start: [
-                    parseInt("{{ request('min_price', $min_db_price) }}"),
-                    parseInt("{{ request('max_price', $max_db_price) }}")
-                ],
-                connect: true,
-                step: 100,
-                range: {
-                    'min': parseInt("{{ $min_db_price }}"),
-                    'max': parseInt("{{ $max_db_price }}")
-                },
-                format: {
-                    to: function(value) {
-                        return Math.round(value);
+            if (priceSlider) {
+                noUiSlider.create(priceSlider, {
+                    start: [
+                        parseInt("{{ request('min_price', $min_db_price) }}"),
+                        parseInt("{{ request('max_price', $max_db_price) }}")
+                    ],
+                    connect: true,
+                    step: 100,
+                    range: {
+                        'min': parseInt("{{ $min_db_price }}"),
+                        'max': parseInt("{{ $max_db_price }}")
                     },
-                    from: function(value) {
-                        return Math.round(value);
+                    format: {
+                        to: function(value) {
+                            return Math.round(value);
+                        },
+                        from: function(value) {
+                            return Math.round(value);
+                        }
                     }
-                }
-            });
+                });
+
+                // Update hodnot cenového slideru
+                priceSlider.noUiSlider.on('update', function(values, handle) {
+                    document.getElementById('price-min').textContent = values[0] + ' Kč';
+                    document.getElementById('price-max').textContent = values[1] + ' Kč';
+                    document.getElementById('min_price').value = values[0];
+                    document.getElementById('max_price').value = values[1];
+                });
+            }
 
             // Inicializace výkonového slideru
             const powerSlider = document.getElementById('power-slider');
-            noUiSlider.create(powerSlider, {
-                start: [
-                    parseInt("{{ request('min_power', $min_db_power) }}"),
-                    parseInt("{{ request('max_power', $max_db_power) }}")
-                ],
-                connect: true,
-                step: 1,
-                range: {
-                    'min': parseInt("{{ $min_db_power }}"),
-                    'max': parseInt("{{ $max_db_power }}")
-                },
-                format: {
-                    to: function(value) {
-                        return Math.round(value);
+            if (powerSlider) {
+                noUiSlider.create(powerSlider, {
+                    start: [
+                        parseInt("{{ request('min_power', $min_db_power) }}"),
+                        parseInt("{{ request('max_power', $max_db_power) }}")
+                    ],
+                    connect: true,
+                    step: 1,
+                    range: {
+                        'min': parseInt("{{ $min_db_power }}"),
+                        'max': parseInt("{{ $max_db_power }}")
                     },
-                    from: function(value) {
-                        return Math.round(value);
+                    format: {
+                        to: function(value) {
+                            return Math.round(value);
+                        },
+                        from: function(value) {
+                            return Math.round(value);
+                        }
                     }
-                }
-            });
+                });
 
-            // Update hodnot cenového slideru
-            priceSlider.noUiSlider.on('update', function(values, handle) {
-                document.getElementById('price-min').textContent = values[0] + ' Kč';
-                document.getElementById('price-max').textContent = values[1] + ' Kč';
-                document.getElementById('min_price').value = values[0];
-                document.getElementById('max_price').value = values[1];
-            });
-
-            // Update hodnot výkonového slideru
-            powerSlider.noUiSlider.on('update', function(values, handle) {
-                document.getElementById('power-min').textContent = values[0] + ' kW';
-                document.getElementById('power-max').textContent = values[1] + ' kW';
-                document.getElementById('min_power').value = values[0];
-                document.getElementById('max_power').value = values[1];
-            });
+                // Update hodnot výkonového slideru
+                powerSlider.noUiSlider.on('update', function(values, handle) {
+                    document.getElementById('power-min').textContent = values[0] + ' kW';
+                    document.getElementById('power-max').textContent = values[1] + ' kW';
+                    document.getElementById('min_power').value = values[0];
+                    document.getElementById('max_power').value = values[1];
+                });
+            }
 
             // Animace pro karty aut
             const cards = document.querySelectorAll('.car-card');
@@ -737,6 +955,14 @@
             });
         });
     </script>
+
+    <!-- Přidáme overlay pro filtry -->
+    <div class="filter-overlay" id="filterOverlay"></div>
+
+    <!-- Tlačítko pro zobrazení filtrů -->
+    <button class="filter-toggle" id="filterToggle">
+        <i class="fas fa-filter"></i>
+    </button>
 </body>
 
 </html>

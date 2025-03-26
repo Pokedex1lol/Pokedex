@@ -237,7 +237,68 @@
         }
 
         .flatpickr-current-month {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 0;
+            height: auto;
+            width: 100%;
+            position: relative;
+        }
+
+        .flatpickr-current-month input.cur-year {
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            display: block;
+            font-size: inherit !important;
+            padding: 2px;
+            margin: 4px 0 0 0;
+            width: auto;
+            min-width: 4ch;
+            text-align: center;
+        }
+
+        .flatpickr-current-month span.cur-month {
+            margin-right: 0;
+            font-weight: bold;
+            display: block;
+        }
+
+        .flatpickr-current-month .cur-month {
+            margin-right: 5px;
+        }
+
+        .flatpickr-current-month .numInputWrapper {
+            width: 6ch;
+        }
+
+        .numInputWrapper span {
+            display: none;
+        }
+
+        .flatpickr-current-month input.cur-year {
+            font-size: 100%;
+            padding: 0;
+            margin: 0;
+            width: 6ch;
+        }
+
+        .flatpickr-monthDropdown-months {
+            background: #2C2C2C !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: #E9E9E9 !important;
+        }
+
+        .flatpickr-monthDropdown-month {
+            background-color: #2C2C2C !important;
+            color: #E9E9E9 !important;
+        }
+
+        .flatpickr-monthDropdown-month:hover {
+            background-color: #E44146 !important;
         }
 
         .flatpickr-weekday {
@@ -317,12 +378,150 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                margin: 5.5rem auto 1rem auto;
+                padding: 0 10px;
+            }
+
+            .car-detail {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .car-main {
+                padding: 15px;
+            }
+
+            .car-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+
+            .car-title h1 {
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+            }
+
+            .price-amount {
+                font-size: 1.5rem;
+            }
+
+            .car-description {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+
+            .specs-section {
+                margin-bottom: 20px;
+            }
+
+            .specs-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+
             .specs-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .spec-item {
+                background: rgba(255, 255, 255, 0.05);
+                padding: 10px;
+                border-radius: 8px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .spec-label {
+                font-size: 0.9rem;
+                margin-bottom: 0;
+            }
+
+            .spec-value {
+                font-size: 0.9rem;
+            }
+
+            .car-sidebar {
+                padding: 15px;
+            }
+
+            .reservation-form h2 {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+
+            .selected-dates {
+                padding: 10px;
+            }
+
+            .date-display {
+                font-size: 0.9rem;
+            }
+
+            .reserve-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .features-grid {
                 grid-template-columns: 1fr;
             }
 
-            .gallery-thumbnails {
-                grid-template-columns: repeat(3, 1fr);
+            .feature-item {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+
+            .safety-features h3 {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+            .flatpickr-calendar {
+                font-size: 0.9rem;
+            }
+
+            .flatpickr-day {
+                height: 35px !important;
+                line-height: 35px !important;
+            }
+
+            .flatpickr-current-month {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 7px 0 0 0;
+                height: 34px;
+                width: 100%;
+                position: relative;
+            }
+
+            .flatpickr-current-month input.cur-year {
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+                transform: none !important;
+                display: inline-block;
+                font-size: inherit !important;
+                padding: 0 2px;
+                margin: 0;
+                width: auto;
+                min-width: 4ch;
+            }
+
+            .flatpickr-current-month span.cur-month {
+                margin-right: 5px;
+                font-weight: bold;
+            }
+
+            .numInput.cur-year {
+                color: #E9E9E9 !important;
             }
         }
 
