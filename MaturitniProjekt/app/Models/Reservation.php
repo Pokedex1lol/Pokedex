@@ -25,7 +25,11 @@ class Reservation extends Model
         return $this->belongsTo(Car::class);
     }
 
-    public function user()
+    /**
+     * Vztah k modelu User
+     * Rezervace patří konkrétnímu uživateli.
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

@@ -15,6 +15,8 @@
             color: #E9E9E9;
             margin: 0;
             padding: 0;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         /* Kontejner */
@@ -25,6 +27,8 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .history-header {
@@ -246,17 +250,72 @@
 
         @media (max-width: 768px) {
             .container {
-                margin: 4rem 1rem;
                 padding: 1rem;
+                width: calc(100% - 2rem);
+                overflow-x: hidden;
+            }
+
+            .history-header {
+                padding: 1rem;
+            }
+
+            .history-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .history-stats {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
             }
 
             .reservation-body {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .car-image {
                 width: 100%;
                 height: 200px;
+            }
+
+            .reservation-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .reservation-status {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .detail-value {
+                width: 100%;
+                text-align: left;
+            }
+
+            .reservation-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>

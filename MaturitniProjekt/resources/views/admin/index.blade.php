@@ -26,7 +26,6 @@
         position: fixed;
         height: calc(100vh - 70px);
         overflow-y: auto;
-        top: 70px;
         left: 0;
     }
 

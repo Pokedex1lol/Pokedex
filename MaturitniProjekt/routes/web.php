@@ -83,7 +83,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::get('/admin/reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
     Route::get('/admin/cars', [AdminController::class, 'cars'])->name('admin.cars');
 });
 
@@ -107,7 +106,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
 // Správa rezervací v admin panelu
 Route::middleware(AdminMiddleware::class)->group(function () {
-    Route::get('/admin/reservations', [ReservationController::class, 'adminIndex'])->name('admin.reservations');
+    Route::get('/admin/reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
     Route::get('/admin/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('admin.reservations.edit');
     Route::put('/admin/reservations/{reservation}', [ReservationController::class, 'update'])->name('admin.reservations.update');
     Route::delete('/admin/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('admin.reservations.destroy');

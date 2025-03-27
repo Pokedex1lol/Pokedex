@@ -1195,6 +1195,13 @@
             margin: 0 auto;
         }
 
+        .contact-section .section-description {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            text-align: center;
+            opacity: 0.7;
+        }
+
         .contact-info {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
