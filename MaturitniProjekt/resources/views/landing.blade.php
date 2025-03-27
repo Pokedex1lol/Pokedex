@@ -1311,12 +1311,12 @@
 
                 <div class="excellence-grid">
                     <div class="excellence-item">
-                        <h3>Poháněno dokonalostí</h3>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
+                        <h3>Rychlost a výkon</h3>
+                        <p>Naše JDM vozy jsou pečlivě vybrány pro maximální výkon a spolehlivost na silnici</p>
                     </div>
                     <div class="excellence-item">
-                        <h3>Poháněno dokonalostí</h3>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p>
+                        <h3>Kvalita a servis</h3>
+                        <p>Pravidelná údržba a profesionální servis zajišťují bezpečnost a spolehlivost každého vozu</p>
                     </div>
                 </div>
 
@@ -1376,8 +1376,8 @@
                     <div class="slide active" data-model="1">
                         <img src="/images/model1.jpg" alt="Model 1" class="model-image">
                         <div class="image-overlay">
-                            <h3>Driven by Excellence</h3>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit</p>
+                            <h3>Mistrovství techniky</h3>
+                            <p>Objevte dokonalost japonského automobilového inženýrství</p>
                         </div>
                     </div>
                     <!-- Další slidy -->
@@ -1423,33 +1423,17 @@
                     Naše vozy jsou navrženy pro nejvyšší výkon a spolehlivost. Vyber si model, který odpovídá tvému stylu.
                 </p>
                 <div class="progress-bars">
+                    @foreach($fastestCars as $car)
                     <div class="progress-item">
                         <div class="progress-info">
-                            <span>Speed 1</span>
-                            <span>80%</span>
+                            <span>{{ $car->name }}</span>
+                            <span>{{ $car->max_speed }} km/h</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 80%;"></div>
+                            <div class="progress-fill" style="width: {{ ($car->max_speed / 350) * 100 }}%;"></div>
                         </div>
                     </div>
-                    <div class="progress-item">
-                        <div class="progress-info">
-                            <span>Speed 2</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%;"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-info">
-                            <span>Speed 3</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 90%;"></div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="dominate-right">
@@ -1495,8 +1479,7 @@
     <section class="faq-section">
         <h2 class="section-title">Často Kladené Otázky</h2>
         <p class="section-description">
-            Lorem ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna.
-            Aliqua Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamco Laboris Nisi Ut Aliquip
+            Zde najdete odpovědi na nejčastější dotazy ohledně pronájmu JDM vozů. Pokud zde nenajdete odpověď na vaši otázku, neváhejte nás kontaktovat.
         </p>
 
         <div class="faq-grid">

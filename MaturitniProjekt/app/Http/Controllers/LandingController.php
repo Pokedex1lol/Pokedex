@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Car;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,11 @@ class LandingController extends Controller
             ->unique()
             ->count();
 
-        return view('landing', compact('carsCount', 'brandsCount'));
+        // Získání 3 nejrychlejších aut
+        $fastestCars = Car::orderBy('max_speed', 'desc')
+                         ->take(3)
+                         ->get(['name', 'max_speed']);
+
+        return view('landing', compact('carsCount', 'brandsCount', 'fastestCars'));
     }
 } 

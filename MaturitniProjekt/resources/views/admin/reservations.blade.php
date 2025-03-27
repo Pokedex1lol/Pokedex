@@ -285,8 +285,8 @@
                     @foreach ($reservations as $reservation)
                         <tr>
                             <td>{{ $reservation->id }}</td>
-                            <td>{{ $reservation->user->name }}</td>
-                            <td>{{ $reservation->car->name }}</td>
+                            <td>{{ $reservation->user ? $reservation->user->name : 'Smazaný uživatel' }}</td>
+                            <td>{{ $reservation->car ? $reservation->car->name : 'Smazané auto' }}</td>
                             <td>{{ $reservation->start_date }}</td>
                             <td>{{ $reservation->end_date }}</td>
                             <td>
