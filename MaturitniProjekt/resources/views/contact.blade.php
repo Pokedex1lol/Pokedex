@@ -121,6 +121,11 @@
         transform: translateX(5px);
     }
 
+    .contact-text a:hover {
+        color: #ff5a5f;
+        transform: translateX(5px);
+    }
+
     .map-container {
         height: 100%;
         min-height: 500px;
@@ -288,7 +293,10 @@
                 <!-- Pravý sloupec - Mapa -->
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d642.3775402628808!2d15.778334871970714!3d50.03523791782884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dc94b6d806d27%3A0xc8d7b0506e560006!2zU3TFmWVkbsOtIHByxa9teXNsb3bDoSDFoWtvbGEgZWxla3Ryb3RlY2huaWNrw6EgYSBWecWhxaHDrSBvZGJvcm7DoSDFoWtvbGEgUGFyZHViaWNl!5e0!3m2!1scs!2scz!4v1710271144435!5m2!1scs!2scz&markers=color:red%7Clabel:SPŠE%7C50.035238,15.778335&zoom=19"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.5100810515234!2d15.777567076266334!3d50.03737997932072!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dcced2c0f99a9%3A0x13e68abed8193137!2zU1DFoEUgYSBWT8WhIFBhcmR1YmljZQ!5e0!3m2!1scs!2scz!4v1710428433659!5m2!1scs!2scz"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
                         allowfullscreen=""
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade">
@@ -325,4 +333,60 @@
         </div>
     </div>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+<script>
+function initMap() {
+    const schoolLocation = { lat: 50.0373799, lng: 15.7797558 };
+    
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        center: schoolLocation,
+        styles: [
+            {
+                "elementType": "geometry",
+                "stylers": [{"color": "#242f3e"}]
+            },
+            {
+                "elementType": "labels.text.fill",
+                "stylers": [{"color": "#746855"}]
+            },
+            {
+                "elementType": "labels.text.stroke",
+                "stylers": [{"color": "#242f3e"}]
+            },
+            {
+                "featureType": "road",
+                "elementType": "geometry",
+                "stylers": [{"color": "#38414e"}]
+            },
+            {
+                "featureType": "road",
+                "elementType": "geometry.stroke",
+                "stylers": [{"color": "#212a37"}]
+            },
+            {
+                "featureType": "road",
+                "elementType": "labels.text.fill",
+                "stylers": [{"color": "#9ca5b3"}]
+            }
+        ]
+    });
+    
+    const marker = new google.maps.Marker({
+        position: schoolLocation,
+        map: map,
+        title: 'SPŠE a VOŠ Pardubice',
+        animation: google.maps.Animation.DROP
+    });
+
+    const infowindow = new google.maps.InfoWindow({
+        content: '<div style="color: black;"><strong>SPŠE a VOŠ Pardubice</strong><br>Karla IV. 13, Pardubice<br>530 02</div>'
+    });
+
+    marker.addListener('click', () => {
+        infowindow.open(map, marker);
+    });
+}
+</script>
 @endsection 

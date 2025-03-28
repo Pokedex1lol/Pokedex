@@ -2,39 +2,26 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-column">
-            <h3>JeDeMe</h3>
-            <p>But I Must Explain To You How All This Mistaken Idea Of Denouncing Pleasure And</p>
+            <h3>O nás</h3>
+            <p>Jsme specializovaná půjčovna JDM vozů, která nabízí jedinečnou příležitost zažít legendární japonské sportovní vozy.</p>
         </div>
         <div class="footer-column">
-            <h3>Produkt</h3>
+            <h3>Rychlé odkazy</h3>
             <ul>
-                <li><a href="#">Lorem Ipsum</a></li>
-                <li><a href="#">Lorem</a></li>
-                <li><a href="#">Dolor Sit Amet</a></li>
-                <li><a href="#">Dolor Lorem</a></li>
-                <li><a href="#">Ipsum dolor</a></li>
-                <li><a href="#">Lorem</a></li>
+                <li><a href="{{ route('landing') }}">Domů</a></li>
+                <li><a href="{{ route('dashboard') }}">Auta</a></li>
+                <li><a href="{{ route('contact') }}">Kontakt</a></li>
             </ul>
         </div>
         <div class="footer-column">
-            <h3>Objevit</h3>
-            <ul>
-                <li><a href="#">Zdroje</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Dokumenty</a></li>
-            </ul>
-        </div>
-        <div class="footer-column">
-            <h3>Komunita</h3>
-            <ul>
-                <li><a href="#">Komunitní centrum</a></li>
-                <li><a href="#">Podpora</a></li>
-                <li><a href="#">Pomoc</a></li>
-                <li><a href="#">Moje info</a></li>
-            </ul>
+            <h3>Kontakt</h3>
+            <p>Email: info@jedeme.cz</p>
+            <p>Telefon: +420 123 456 789</p>
+            <p>Adresa: Ulice 123, Město, PSČ</p>
         </div>
     </div>
 </footer>
+
 <div class="copyright">
-    <p>Autopůjčovna JDM – Vytvořil: Nikolas Hendrych 4F</p>
+    <p>&copy; {{ date('Y') }} JeDeMe. Vytvořil: Nikolas Hendrych 4F</p>
 </div> 

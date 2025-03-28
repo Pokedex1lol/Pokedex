@@ -933,20 +933,63 @@
                                         <p>Počet dní: ${document.getElementById('totalDays').textContent}</p>
                                         <p>Celková cena: ${document.getElementById('totalPrice').textContent}</p>
                                         <p>Kauce: ${{{ $car->deposit }}} Kč</p>
+                                        <div class="form-group">
+                                            <label for="branch">Pobočka pro vyzvednutí:</label>
+                                            <select id="branch" name="branch" class="swal2-input" required>
+                                                <option value="">Vyberte pobočku</option>
+                                                <option value="praha">Praha - Hlavní</option>
+                                                <option value="pardubice">Pardubice - Centrum</option>
+                                                <option value="ostrava">Ostrava - Poruba</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Telefonní číslo:</label>
+                                            <input type="tel" id="phone" name="phone" class="swal2-input" pattern="[0-9]{9}" placeholder="123456789" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Kontaktní email:</label>
+                                            <input type="email" id="email" name="email" class="swal2-input" placeholder="vas@email.cz" required>
+                                        </div>
                                     `,
                                     icon: 'question',
                                     showCancelButton: true,
                                     confirmButtonText: 'Rezervovat',
                                     cancelButtonText: 'Zrušit',
                                     confirmButtonColor: '#E44146',
-                                    cancelButtonColor: '#6c757d'
+                                    cancelButtonColor: '#6c757d',
+                                    preConfirm: () => {
+                                        const branch = document.getElementById('branch').value;
+                                        const phone = document.getElementById('phone').value;
+                                        const email = document.getElementById('email').value;
+                                        
+                                        if (!branch) {
+                                            Swal.showValidationMessage('Vyberte prosím pobočku');
+                                            return false;
+                                        }
+                                        
+                                        if (!phone.match(/^[0-9]{9}$/)) {
+                                            Swal.showValidationMessage('Zadejte platné telefonní číslo (9 číslic)');
+                                            return false;
+                                        }
+                                        
+                                        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                                            Swal.showValidationMessage('Zadejte platnou emailovou adresu');
+                                            return false;
+                                        }
+                                        
+                                        return { branch, phone, email };
+                                    }
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        const form = this;
+                                        const formData = new FormData(form);
+                                        formData.append('branch', result.value.branch);
+                                        formData.append('phone', result.value.phone);
+                                        formData.append('email', result.value.email);
+                                        
                                         // Odeslání formuláře
                                         fetch(form.action, {
                                             method: 'POST',
-                                            body: new FormData(form),
+                                            body: formData,
                                             headers: {
                                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                                                 'Accept': 'application/json'
